@@ -9,6 +9,7 @@
     "photos:demo": "node scripts/generate-demo-photos.js royal-family-files"
   },
   "dependencies": {
-    "@11ty/eleventy": "^3.1.2"
+    "@11ty/eleventy": "^3.1.2",
+    "markdown-it": "^14.1.0"
   }
 }

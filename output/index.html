@@ -37,7 +37,7 @@
 
 
 <li class="person has-children" data-depth="0">
-  <div class="person-row">
+  <div class="person-row" data-born="1865-06-03" data-died="1936-01-20">
     <div class="person-row__content">
       <div class="person-avatar">
   
@@ -66,12 +66,41 @@
 
       <span class="person-name">King George V</span>
 
+      <template class="bio-template"><h2>Overview</h2>
+<p>King George V is the root person of this example tree.
+This profile is intentionally richer than the others so we can test Markdown rendering in the future dialog experience.</p>
+<h3>Why this record exists</h3>
+<ul>
+<li>Demonstrate a longer biography section.</li>
+<li>Verify headings and list rendering.</li>
+<li>Verify remote image rendering inside markdown content.</li>
+</ul>
+<h3>Sample timeline</h3>
+<ol>
+<li>Born in London (<code>1865-06-03</code>).</li>
+<li>Added as the root person in this demo data structure.</li>
+<li>Used as the primary test case for markdown-to-HTML rendering.</li>
+</ol>
+<h3>Family context in this demo</h3>
+<p>He appears in the tree with spouse <strong>Queen Elizabeth, The Queen Mother</strong> and descendants continuing through <strong>Queen Elizabeth II</strong>.</p>
+<h3>Gallery (Markdown Images)</h3>
+<p><img src="https://source.unsplash.com/1200x800/?vintage,portrait" alt="Vintage portrait style placeholder"></p>
+<p><img src="https://source.unsplash.com/1200x800/?london,palace" alt="London palace placeholder"></p>
+<blockquote>
+<p>Note: The two images above are remote placeholders intended only for markdown rendering tests.</p>
+</blockquote>
+</template>
+
       
         <span
           class="spouse-badge deceased"
           data-photo-src="/royal-family-files/Queen Elizabeth, The Queen Mother.jpg"
           data-initials="QE"
+          data-born="1900-08-04"
+          data-died="2002-03-30"
         >
+          <template class="bio-template"><p>Queen Elizabeth, The Queen Mother is recorded as spouse of King George V in this demo dataset.</p>
+</template>
           <span class="spouse-avatar">
   
     
@@ -105,7 +134,7 @@
 
 
 <li class="person has-children" data-depth="1">
-  <div class="person-row">
+  <div class="person-row" data-born="1926-04-21" data-died="2022-09-08">
     <div class="person-row__content">
       <div class="person-avatar">
   
@@ -134,12 +163,19 @@
 
       <span class="person-name">Queen Elizabeth II</span>
 
+      <template class="bio-template"><p>Queen Elizabeth II is recorded as a blood descendant of King George V in this example tree.</p>
+</template>
+
       
         <span
           class="spouse-badge deceased"
           data-photo-src="/royal-family-files/King George V &amp; Queen Elizabeth, The Queen Mother/Prince Philip, Duke of Edinburgh.jpg"
           data-initials="PP"
+          data-born="1921-06-10"
+          data-died="2021-04-09"
         >
+          <template class="bio-template"><p>Prince Philip appears as spouse of Queen Elizabeth II in this sample tree.</p>
+</template>
           <span class="spouse-avatar">
   
     
@@ -173,7 +209,7 @@
 
 
 <li class="person has-children" data-depth="2">
-  <div class="person-row">
+  <div class="person-row" data-born="1948-11-14" data-died="">
     <div class="person-row__content">
       <div class="person-avatar">
   
@@ -202,12 +238,19 @@
 
       <span class="person-name">Charles, Prince of Wales</span>
 
+      <template class="bio-template"><p>Charles is represented with two marriages in this demo, while remaining a single primary person node.</p>
+</template>
+
       
         <span
           class="spouse-badge deceased"
           data-photo-src="/royal-family-files/King George V &amp; Queen Elizabeth, The Queen Mother/Queen Elizabeth II &amp; Prince Philip, Duke of Edinburgh/Diana, Princess of Wales.jpg"
           data-initials="DP"
+          data-born="1961-07-01"
+          data-died="1997-08-31"
         >
+          <template class="bio-template"><p>Diana is recorded as Charles’s first spouse in this sample dataset.</p>
+</template>
           <span class="spouse-avatar">
   
     
@@ -234,7 +277,11 @@
           class="spouse-badge"
           data-photo-src="/royal-family-files/King George V &amp; Queen Elizabeth, The Queen Mother/Queen Elizabeth II &amp; Prince Philip, Duke of Edinburgh/Camilla, Duchess of Cornwall (2nd).jpg"
           data-initials="CD"
+          data-born="1947-07-17"
+          data-died=""
         >
+          <template class="bio-template"><p>Camilla is recorded as Charles’s second spouse.</p>
+</template>
           <span class="spouse-avatar">
   
     
@@ -268,7 +315,7 @@
 
 
 <li class="person has-children" data-depth="3">
-  <div class="person-row">
+  <div class="person-row" data-born="1982-06-21" data-died="">
     <div class="person-row__content">
       <div class="person-avatar">
   
@@ -297,12 +344,19 @@
 
       <span class="person-name">Prince William, Duke of Cambridge</span>
 
+      <template class="bio-template"><p>Prince William is a child of Charles and Diana in this sample.</p>
+</template>
+
       
         <span
           class="spouse-badge"
           data-photo-src="/royal-family-files/King George V &amp; Queen Elizabeth, The Queen Mother/Queen Elizabeth II &amp; Prince Philip, Duke of Edinburgh/Charles, Prince of Wales &amp; Diana, Princess of Wales/Catherine, Duchess of Cambridge.jpg"
           data-initials="CD"
+          data-born="1982-01-09"
+          data-died=""
         >
+          <template class="bio-template"><p>Catherine is recorded as spouse of Prince William in this sample.</p>
+</template>
           <span class="spouse-avatar">
   
     
@@ -336,7 +390,7 @@
 
 
 <li class="person leaf" data-depth="4">
-  <div class="person-row">
+  <div class="person-row" data-born="2013-07-22" data-died="">
     <div class="person-row__content">
       <div class="person-avatar">
   
@@ -358,6 +412,9 @@
 
       <span class="person-name">Prince George of Cambridge</span>
 
+      <template class="bio-template"><p>Prince George is represented as a leaf descendant in this sample.</p>
+</template>
+
       
     </div>
   </div>
@@ -371,7 +428,7 @@
 
 
 <li class="person leaf" data-depth="4">
-  <div class="person-row">
+  <div class="person-row" data-born="2015-05-02" data-died="">
     <div class="person-row__content">
       <div class="person-avatar">
   
@@ -393,6 +450,9 @@
 
       <span class="person-name">Princess Charlotte of Cambridge</span>
 
+      <template class="bio-template"><p>Princess Charlotte is represented as a leaf descendant in this sample.</p>
+</template>
+
       
     </div>
   </div>
@@ -406,7 +466,7 @@
 
 
 <li class="person leaf" data-depth="4">
-  <div class="person-row">
+  <div class="person-row" data-born="2018-04-23" data-died="">
     <div class="person-row__content">
       <div class="person-avatar">
   
@@ -428,6 +488,9 @@
 
       <span class="person-name">Prince Louis of Cambridge</span>
 
+      <template class="bio-template"><p>Prince Louis is represented as a leaf descendant in this sample.</p>
+</template>
+
       
     </div>
   </div>
@@ -446,7 +509,7 @@
 
 
 <li class="person leaf" data-depth="3">
-  <div class="person-row">
+  <div class="person-row" data-born="1984-09-15" data-died="">
     <div class="person-row__content">
       <div class="person-avatar">
   
@@ -468,12 +531,19 @@
 
       <span class="person-name">Prince Harry, Duke of Sussex</span>
 
+      <template class="bio-template"><p>Prince Harry is a child of Charles and Diana in this sample.</p>
+</template>
+
       
         <span
           class="spouse-badge external"
           data-photo-src="/royal-family-files/King George V &amp; Queen Elizabeth, The Queen Mother/Queen Elizabeth II &amp; Prince Philip, Duke of Edinburgh/Charles, Prince of Wales &amp; Diana, Princess of Wales/Meghan Markle.jpg"
           data-initials="MM"
+          data-born="1981-08-04"
+          data-died=""
         >
+          <template class="bio-template"><p>Meghan Markle is recorded as spouse of Prince Harry and marked as external-family linkable data.</p>
+</template>
           <span class="spouse-avatar">
   
     
@@ -515,7 +585,7 @@
 
 
 <li class="person leaf" data-depth="2">
-  <div class="person-row">
+  <div class="person-row" data-born="1950-08-15" data-died="">
     <div class="person-row__content">
       <div class="person-avatar">
   
@@ -537,6 +607,9 @@
 
       <span class="person-name">Princess Anne, Princess Royal</span>
 
+      <template class="bio-template"><p>Princess Anne is included as a leaf node in this sample.</p>
+</template>
+
       
     </div>
   </div>
@@ -550,7 +623,7 @@
 
 
 <li class="person leaf" data-depth="2">
-  <div class="person-row">
+  <div class="person-row" data-born="1960-02-19" data-died="">
     <div class="person-row__content">
       <div class="person-avatar">
   
@@ -572,6 +645,9 @@
 
       <span class="person-name">Prince Andrew, Duke of York</span>
 
+      <template class="bio-template"><p>Prince Andrew is included as a leaf node in this sample.</p>
+</template>
+
       
     </div>
   </div>
@@ -585,7 +661,7 @@
 
 
 <li class="person leaf" data-depth="2">
-  <div class="person-row">
+  <div class="person-row" data-born="1964-03-10" data-died="">
     <div class="person-row__content">
       <div class="person-avatar">
   
@@ -607,6 +683,9 @@
 
       <span class="person-name">Prince Edward, Earl of Wessex</span>
 
+      <template class="bio-template"><p>Prince Edward is included as a leaf node in this sample.</p>
+</template>
+
       
     </div>
   </div>
@@ -625,7 +704,7 @@
 
 
 <li class="person leaf" data-depth="1">
-  <div class="person-row">
+  <div class="person-row" data-born="1930-08-21" data-died="2002-02-09">
     <div class="person-row__content">
       <div class="person-avatar">
   
@@ -646,6 +725,9 @@
       
 
       <span class="person-name">Princess Margaret, Countess of Snowdon</span>
+
+      <template class="bio-template"><p>Princess Margaret is included as a leaf node (no children recorded in this sample).</p>
+</template>
 
       
     </div>
@@ -676,16 +758,33 @@
 
       <div class="details-meta">
         <div class="details-meta-row">
-          <span class="details-meta-icon">📁</span>
+          <span class="details-meta-icon">📅</span>
+          <span class="details-meta-label">Born</span>
+          <span class="details-meta-value details-placeholder" id="details-born">—</span>
+        </div>
+        <div class="details-meta-row">
+          <span class="details-meta-icon">📅</span>
+          <span class="details-meta-label">Died</span>
+          <span class="details-meta-value details-placeholder" id="details-died">—</span>
+        </div>
+        <div class="details-meta-row">
+          <span class="details-meta-icon">👥</span>
           <span class="details-meta-label">People</span>
           <span class="details-meta-value">20</span>
         </div>
-        <div class="details-meta-row">
+        <div class="details-meta-row details-meta-row--small">
           <span class="details-meta-icon">🖼️</span>
           <span class="details-meta-label">Photo fallback</span>
           <span class="details-meta-value">.png, .jpg, .jpeg, .webp, .avif</span>
         </div>
       </div>
+
+      <section class="details-bio" aria-label="Biography">
+        <h3 class="details-bio-title">Biography</h3>
+        <div class="details-bio-content" id="details-bio-content">
+          <p class="details-placeholder">No biography text provided.</p>
+        </div>
+      </section>
     </div>
   </div>
 </main>

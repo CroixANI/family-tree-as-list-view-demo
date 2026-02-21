@@ -15,7 +15,7 @@
 {% set isExpandedByDefault = depth < 2 %}
 {% set childrenId = ('children-' ~ person.relPath) | replace('/', '-') | replace(' ', '-') | replace('&', 'and') | replace(',', '') | replace('.', '') | replace('(', '') | replace(')', '') %}
 <li class="person{% if person.children.length %} has-children{% else %} leaf{% endif %}" data-depth="{{ depth }}">
-  <div class="person-row">
+  <div class="person-row" data-born="{{ person.born }}" data-died="{{ person.died }}">
     <div class="person-row__content">
       <div class="person-avatar">{{ photoImg(person.photo, person.initials, 'person-photo', person.fullName ~ ' portrait') }}</div>
       <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for {{ person.fullName }}" aria-haspopup="dialog">
@@ -41,12 +41,17 @@
 
       <span class="person-name">{{ person.fullName }}</span>
 
+      <template class="bio-template">{{ person.notesHtml | safe }}</template>
+
       {% for spouse in person.spouses %}
         <span
           class="spouse-badge{% if spouse.deceased %} deceased{% endif %}{% if spouse.external %} external{% endif %}"
           data-photo-src="{% if spouse.photo and spouse.photo.url %}{% if spouse.photo.remote %}{{ spouse.photo.url }}{% else %}{{ spouse.photo.url | url }}{% endif %}{% endif %}"
           data-initials="{{ spouse.initials }}"
+          data-born="{{ spouse.born }}"
+          data-died="{{ spouse.died }}"
         >
+          <template class="bio-template">{{ spouse.notesHtml | safe }}</template>
           <span class="spouse-avatar">{{ photoImg(spouse.photo, spouse.initials, 'spouse-photo', spouse.fullName ~ ' portrait') }}</span>
           <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="Open details dialog for {{ spouse.fullName }}" aria-haspopup="dialog">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

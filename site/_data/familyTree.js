@@ -2,8 +2,15 @@
 
 const fs = require('fs');
 const path = require('path');
+const MarkdownItModule = require('markdown-it');
+const MarkdownIt = MarkdownItModule.default || MarkdownItModule;
 
 const IMAGE_EXT_FALLBACK_ORDER = ['.png', '.jpg', '.jpeg', '.webp', '.avif'];
+const markdown = new MarkdownIt({
+  html: false,
+  linkify: true,
+  typographer: true
+});
 
 function toPosix(filePath) {
   return filePath.split(path.sep).join('/');
@@ -133,12 +140,14 @@ function initials(name) {
 }
 
 function parsePersonFile(personAbsPath, workspaceRootAbs, sourceDirRel) {
-  const markdown = fs.readFileSync(personAbsPath, 'utf8');
-  const parsed = extractFrontmatter(markdown);
+  const rawMarkdown = fs.readFileSync(personAbsPath, 'utf8');
+  const parsed = extractFrontmatter(rawMarkdown);
   const fullName = cleanScalar(parsed.data.full_name) || path.basename(personAbsPath, '.md');
   const externalUrls = Array.isArray(parsed.data.external_url)
     ? parsed.data.external_url.map(cleanScalar).filter(Boolean)
     : [];
+
+  const notesRaw = parsed.body.trim();
 
   return {
     absPath: personAbsPath,
@@ -149,15 +158,16 @@ function parsePersonFile(personAbsPath, workspaceRootAbs, sourceDirRel) {
     birthPlace: cleanScalar(parsed.data.birth_place),
     titles: Array.isArray(parsed.data.titles) ? parsed.data.titles.map(cleanScalar).filter(Boolean) : [],
     externalUrls,
-    notes: parsed.body.trim(),
+    notes: notesRaw,
+    notesHtml: notesRaw ? markdown.render(notesRaw) : '',
     photo: resolvePhoto(personAbsPath, parsed.data, workspaceRootAbs, sourceDirRel),
     initials: initials(fullName)
   };
 }
 
 function parseMarriageFile(marriageAbsPath) {
-  const markdown = fs.readFileSync(marriageAbsPath, 'utf8');
-  const parsed = extractFrontmatter(markdown);
+  const rawMarkdown = fs.readFileSync(marriageAbsPath, 'utf8');
+  const parsed = extractFrontmatter(rawMarkdown);
   const partners = Array.isArray(parsed.data.partners) ? parsed.data.partners : [];
 
   const partnerRefs = partners
@@ -311,6 +321,10 @@ function getChildrenForMarriage(marriage) {
       if (spouse) {
         spouses.push({
           fullName: spouse.fullName,
+          born: spouse.born,
+          died: spouse.died,
+          notes: spouse.notes,
+          notesHtml: spouse.notesHtml,
           external: spouse.externalUrls.length > 0,
           externalUrl: spouse.externalUrls[0] || '',
           deceased: Boolean(spouse.died),

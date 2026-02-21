@@ -77,6 +77,12 @@ function getSpousesFromRow(personRow) {
   }));
 }
 
+function getBioHtmlFromContainer(container) {
+  if (!container) return '';
+  const template = container.querySelector(':scope > .bio-template');
+  return template ? template.innerHTML.trim() : '';
+}
+
 function renderDetailsSpouses(container, spouses) {
   if (!spouses.length) {
     container.innerHTML = '<div class="details-placeholder">No spouse recorded</div>';
@@ -118,8 +124,11 @@ function setupDetailsOverlay() {
   const detailsName = document.getElementById('details-name');
   const detailsAvatar = document.getElementById('details-avatar');
   const detailsSpouses = document.getElementById('details-spouses');
+  const detailsBorn = document.getElementById('details-born');
+  const detailsDied = document.getElementById('details-died');
+  const detailsBioContent = document.getElementById('details-bio-content');
 
-  if (!overlay || !dialog || !closeBtn || !detailsName || !detailsAvatar || !detailsSpouses) return;
+  if (!overlay || !dialog || !closeBtn || !detailsName || !detailsAvatar || !detailsSpouses || !detailsBorn || !detailsDied || !detailsBioContent) return;
 
   let lastFocusedElement = null;
 
@@ -156,12 +165,39 @@ function setupDetailsOverlay() {
     }
   }
 
-  function openDetails(name, photoSrc, spouses, triggerEl) {
+  function setMetaValue(el, value, placeholderText = '—') {
+    const trimmed = String(value || '').trim();
+    if (trimmed) {
+      el.textContent = trimmed;
+      el.classList.remove('details-placeholder');
+      return;
+    }
+
+    el.textContent = placeholderText;
+    el.classList.add('details-placeholder');
+  }
+
+  function openDetails(payload) {
+    const {
+      name,
+      photoSrc,
+      spouses,
+      born,
+      died,
+      bioHtml,
+      triggerEl
+    } = payload;
+
     lastFocusedElement = triggerEl instanceof HTMLElement ? triggerEl : document.activeElement;
 
     detailsName.textContent = name;
     createAvatarContent(detailsAvatar, name, photoSrc);
     renderDetailsSpouses(detailsSpouses, spouses);
+    setMetaValue(detailsBorn, born, '—');
+    setMetaValue(detailsDied, died, '—');
+    detailsBioContent.innerHTML = bioHtml && bioHtml.trim()
+      ? bioHtml
+      : '<p class=\"details-placeholder\">No biography text provided.</p>';
 
     overlay.hidden = false;
     dialog.addEventListener('keydown', trapFocus);
@@ -198,7 +234,19 @@ function setupDetailsOverlay() {
       const personName = row.querySelector('.person-name')?.textContent.trim() || 'Unknown person';
       const personPhoto = getPersonPhotoSource(row);
       const spouses = getSpousesFromRow(row);
-      openDetails(personName, personPhoto, spouses, btn);
+      const born = row.dataset.born || '';
+      const died = row.dataset.died || '';
+      const bioHtml = getBioHtmlFromContainer(row.querySelector(':scope > .person-row__content'));
+
+      openDetails({
+        name: personName,
+        photoSrc: personPhoto,
+        spouses,
+        born,
+        died,
+        bioHtml,
+        triggerEl: btn
+      });
     });
   });
 
@@ -211,13 +259,24 @@ function setupDetailsOverlay() {
       const spousePhoto = badge.getAttribute('data-photo-src') || '';
       const spouseExternal = badge.classList.contains('external');
       const spouseDeceased = badge.classList.contains('deceased');
+      const spouseBorn = badge.dataset.born || '';
+      const spouseDied = badge.dataset.died || '';
+      const spouseBioHtml = getBioHtmlFromContainer(badge);
 
       const primaryName = personRow.querySelector('.person-name')?.textContent.trim() || 'Unknown person';
-      openDetails(spouseName, spousePhoto, [{
-        name: primaryName,
-        external: false,
-        deceased: false
-      }], btn);
+      openDetails({
+        name: spouseName,
+        photoSrc: spousePhoto,
+        spouses: [{
+          name: primaryName,
+          external: false,
+          deceased: false
+        }],
+        born: spouseBorn,
+        died: spouseDied,
+        bioHtml: spouseBioHtml,
+        triggerEl: btn
+      });
 
       if (spouseExternal || spouseDeceased) {
         const extra = detailsSpouses.querySelector('.details-spouse-row');

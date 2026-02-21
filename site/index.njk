@@ -50,16 +50,33 @@ title: Family Tree
 
       <div class="details-meta">
         <div class="details-meta-row">
-          <span class="details-meta-icon">📁</span>
+          <span class="details-meta-icon">📅</span>
+          <span class="details-meta-label">Born</span>
+          <span class="details-meta-value details-placeholder" id="details-born">—</span>
+        </div>
+        <div class="details-meta-row">
+          <span class="details-meta-icon">📅</span>
+          <span class="details-meta-label">Died</span>
+          <span class="details-meta-value details-placeholder" id="details-died">—</span>
+        </div>
+        <div class="details-meta-row">
+          <span class="details-meta-icon">👥</span>
           <span class="details-meta-label">People</span>
           <span class="details-meta-value">{{ familyTree.totalPeople }}</span>
         </div>
-        <div class="details-meta-row">
+        <div class="details-meta-row details-meta-row--small">
           <span class="details-meta-icon">🖼️</span>
           <span class="details-meta-label">Photo fallback</span>
           <span class="details-meta-value">{{ familyTree.imageFallbackOrder | join(', ') }}</span>
         </div>
       </div>
+
+      <section class="details-bio" aria-label="Biography">
+        <h3 class="details-bio-title">Biography</h3>
+        <div class="details-bio-content" id="details-bio-content">
+          <p class="details-placeholder">No biography text provided.</p>
+        </div>
+      </section>
     </div>
   </div>
 </main>
