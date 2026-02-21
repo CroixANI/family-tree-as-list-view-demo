@@ -1,0 +1,14 @@
+{
+  "name": "family-tree-eleventy-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Generate a family tree static site from folder-based markdown data.",
+  "scripts": {
+    "build": "node scripts/clean-output.js && eleventy",
+    "start": "eleventy --serve",
+    "photos:demo": "node scripts/generate-demo-photos.js royal-family-files"
+  },
+  "dependencies": {
+    "@11ty/eleventy": "^3.1.2"
+  }
+}

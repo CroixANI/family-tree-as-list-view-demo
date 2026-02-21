@@ -1,0 +1,62 @@
+---
+layout: base.njk
+title: Family Tree
+---
+{% from "person-tree.njk" import renderPerson %}
+
+<header class="royal-header">
+  <div class="royal-crown">♛</div>
+  <h1>Family Tree</h1>
+  <p class="royal-subtitle">Generated with Eleventy</p>
+  <p class="tree-source">Source folder: <code>{{ familyTree.sourceDir }}</code></p>
+
+  <div class="controls">
+    <button id="expand-all" type="button">Expand All</button>
+    <button id="collapse-all" type="button">Collapse All</button>
+  </div>
+</header>
+
+<main>
+  {% if familyTree.error %}
+    <div class="build-error">
+      <h2>Build Input Error</h2>
+      <p>{{ familyTree.error }}</p>
+      <p>Set <code>FAMILY_DATA_DIR</code> to a valid folder path.</p>
+    </div>
+  {% elseif not familyTree.root %}
+    <div class="build-error">
+      <h2>No root person found</h2>
+      <p>Check person markdown files and `_marriage.md` references.</p>
+    </div>
+  {% else %}
+    <ul class="family-tree">
+      {{ renderPerson(familyTree.root, 0) }}
+    </ul>
+  {% endif %}
+
+  <div class="details-overlay" id="details-overlay" hidden>
+    <div class="details-dialog" role="dialog" aria-modal="true" aria-labelledby="details-name">
+      <button class="details-close" id="details-close" aria-label="Close">✕</button>
+
+      <div class="details-avatar-wrap">
+        <div class="details-avatar" id="details-avatar"></div>
+      </div>
+
+      <h2 class="details-name" id="details-name"></h2>
+      <div class="details-spouses" id="details-spouses"></div>
+
+      <div class="details-meta">
+        <div class="details-meta-row">
+          <span class="details-meta-icon">📁</span>
+          <span class="details-meta-label">People</span>
+          <span class="details-meta-value">{{ familyTree.totalPeople }}</span>
+        </div>
+        <div class="details-meta-row">
+          <span class="details-meta-icon">🖼️</span>
+          <span class="details-meta-label">Photo fallback</span>
+          <span class="details-meta-value">{{ familyTree.imageFallbackOrder | join(', ') }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
