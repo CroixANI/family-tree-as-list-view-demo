@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Family Tree (Foldable List)</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap");
+
+      :root {
+        --bg: #f6f7fb;
+        --card: #ffffff;
+        --line: #c7cbe2;
+        --text: #1f2430;
+        --muted: #6c7284;
+        --accent: #a6d65a;
+        --accent-2: #79b5e9;
+        --accent-3: #f2c14e;
+        --shadow: 0 12px 24px rgba(25, 30, 55, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: radial-gradient(900px 500px at 10% 0%, #eef3ff 0%, #f6f7fb 45%, #f6f7fb 100%);
+        color: var(--text);
+        font-family: "DM Sans", "Trebuchet MS", "Segoe UI", sans-serif;
+      }
+
+      .page {
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 28px 18px 80px;
+      }
+
+      .header {
+        margin-bottom: 24px;
+      }
+
+      .header h1 {
+        font-size: 28px;
+        letter-spacing: -0.02em;
+        margin: 0 0 6px;
+      }
+
+      .header p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .treeview {
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid #e6e8f4;
+        border-radius: 20px;
+        padding: 20px 16px 6px;
+        box-shadow: var(--shadow);
+      }
+
+      .tree,
+      .tree ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .tree ul {
+        margin-left: 30px;
+        padding-left: 18px;
+        border-left: 2px dashed var(--line);
+      }
+
+      .tree li {
+        position: relative;
+        margin: 0 0 18px;
+        padding-left: 18px;
+      }
+
+      .tree li::before {
+        content: "";
+        position: absolute;
+        top: 34px;
+        left: -18px;
+        width: 18px;
+        border-top: 2px dashed var(--line);
+      }
+
+      .tree li:last-child {
+        margin-bottom: 0;
+      }
+
+      .tree li:last-child::after {
+        content: "";
+        position: absolute;
+        left: -20px;
+        top: 36px;
+        height: calc(100% - 36px);
+        border-left: 4px solid #f6f7fb;
+      }
+
+      .person {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: var(--card);
+        border: 1px solid #e4e7f5;
+        border-radius: 16px;
+        padding: 10px 12px;
+        min-height: 68px;
+        box-shadow: 0 8px 18px rgba(30, 36, 72, 0.06);
+      }
+
+      .avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        position: relative;
+        flex: 0 0 48px;
+        background: radial-gradient(circle at 30% 20%, #ffffff 0%, rgba(255, 255, 255, 0.2) 35%),
+          var(--accent);
+        border: 4px solid rgba(255, 255, 255, 0.85);
+        box-shadow: 0 10px 20px rgba(20, 24, 60, 0.12);
+        display: grid;
+        place-items: center;
+        color: #1a1f2b;
+        font-weight: 700;
+      }
+
+      .avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+
+      .avatar.alt {
+        background: radial-gradient(circle at 30% 20%, #ffffff 0%, rgba(255, 255, 255, 0.2) 35%),
+          var(--accent-2);
+      }
+
+      .avatar.alt-2 {
+        background: radial-gradient(circle at 30% 20%, #ffffff 0%, rgba(255, 255, 255, 0.2) 35%),
+          var(--accent-3);
+      }
+
+      .info {
+        flex: 1 1 auto;
+      }
+
+      .name {
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .meta {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .toggle {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        border: 1px solid #e1e4f3;
+        background: #f7f8fe;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        position: relative;
+        transition: transform 0.2s ease, background 0.2s ease;
+      }
+
+      .toggle::before,
+      .toggle::after {
+        content: "";
+        position: absolute;
+        width: 14px;
+        height: 2px;
+        background: #30344a;
+        border-radius: 2px;
+      }
+
+      .toggle::after {
+        width: 2px;
+        height: 14px;
+        opacity: 1;
+      }
+
+      .tree li:not(.is-collapsed) > .person .toggle::after {
+        opacity: 0;
+      }
+
+      .toggle:hover {
+        background: #eff2ff;
+        transform: translateY(-1px);
+      }
+
+      .tree li.leaf > .person .toggle {
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      .tree li.is-collapsed > ul {
+        display: none;
+      }
+
+      @media (max-width: 560px) {
+        .page {
+          padding: 22px 14px 60px;
+        }
+
+        .header h1 {
+          font-size: 24px;
+        }
+
+        .tree ul {
+          margin-left: 22px;
+        }
+
+        .person {
+          gap: 10px;
+          padding: 8px 10px;
+        }
+
+        .avatar {
+          width: 42px;
+          height: 42px;
+          flex-basis: 42px;
+        }
+
+        .name {
+          font-size: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="header">
+        <h1>Family Tree</h1>
+        <p>Tap the plus button to fold and unfold each branch.</p>
+      </header>
+
+      <section class="treeview" aria-label="Family tree">
+        <ul class="tree">
+          <li class="node">
+            <div class="person">
+              <div class="avatar"><span>JA</span></div>
+              <div class="info">
+                <div class="name">James Adams</div>
+                <div class="meta">Patriarch</div>
+              </div>
+              <button class="toggle" aria-expanded="true" aria-label="Collapse branch"></button>
+            </div>
+            <ul>
+              <li class="node">
+                <div class="person">
+                  <div class="avatar alt"><span>MT</span></div>
+                  <div class="info">
+                    <div class="name">Maria Thompson</div>
+                    <div class="meta">Spouse</div>
+                  </div>
+                  <button class="toggle" aria-expanded="true" aria-label="Collapse branch"></button>
+                </div>
+                <ul>
+                  <li class="node">
+                    <div class="person">
+                      <div class="avatar alt-2"><span>LS</span></div>
+                      <div class="info">
+                        <div class="name">Liam Scott</div>
+                        <div class="meta">Son</div>
+                      </div>
+                      <button class="toggle" aria-expanded="true" aria-label="Collapse branch"></button>
+                    </div>
+                    <ul>
+                      <li class="node leaf">
+                        <div class="person">
+                          <div class="avatar"><span>EM</span></div>
+                          <div class="info">
+                            <div class="name">Eva Moore</div>
+                            <div class="meta">Granddaughter</div>
+                          </div>
+                          <button class="toggle" aria-expanded="false" aria-label="Leaf"></button>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="node leaf">
+                    <div class="person">
+                      <div class="avatar alt"><span>NA</span></div>
+                      <div class="info">
+                        <div class="name">Nora Adams</div>
+                        <div class="meta">Daughter</div>
+                      </div>
+                      <button class="toggle" aria-expanded="false" aria-label="Leaf"></button>
+                    </div>
+                  </li>
+                  <li class="node">
+                    <div class="person">
+                      <div class="avatar"><span>RS</span></div>
+                      <div class="info">
+                        <div class="name">Rowan Scott</div>
+                        <div class="meta">Son</div>
+                      </div>
+                      <button class="toggle" aria-expanded="true" aria-label="Collapse branch"></button>
+                    </div>
+                    <ul>
+                      <li class="node leaf">
+                        <div class="person">
+                          <div class="avatar alt-2"><span>HC</span></div>
+                          <div class="info">
+                            <div class="name">Hazel Scott</div>
+                            <div class="meta">Granddaughter</div>
+                          </div>
+                          <button class="toggle" aria-expanded="false" aria-label="Leaf"></button>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li class="node leaf">
+                <div class="person">
+                  <div class="avatar alt-2"><span>KG</span></div>
+                  <div class="info">
+                    <div class="name">Kai Green</div>
+                    <div class="meta">Brother</div>
+                  </div>
+                  <button class="toggle" aria-expanded="false" aria-label="Leaf"></button>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <script>
+      const nodes = document.querySelectorAll(".tree li.node");
+
+      nodes.forEach((node) => {
+        const button = node.querySelector(".toggle");
+        const hasChildren = node.querySelector("ul");
+
+        if (!hasChildren) {
+          node.classList.add("leaf");
+          return;
+        }
+
+        button.addEventListener("click", () => {
+          node.classList.toggle("is-collapsed");
+          const isExpanded = !node.classList.contains("is-collapsed");
+          button.setAttribute("aria-expanded", String(isExpanded));
+          button.setAttribute(
+            "aria-label",
+            isExpanded ? "Collapse branch" : "Expand branch"
+          );
+        });
+      });
+    </script>
+  </body>
+</html>

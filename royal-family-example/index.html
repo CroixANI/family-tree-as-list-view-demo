@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>British Royal Family Tree</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <header class="royal-header">
+    <div class="royal-crown">♛</div>
+    <h1>British Royal Family Tree</h1>
+    <p class="royal-subtitle">The House of Windsor</p>
+    <div class="controls">
+      <button id="expand-all">Expand All</button>
+      <button id="collapse-all">Collapse All</button>
+    </div>
+  </header>
+
+  <main>
+    <ul class="family-tree">
+
+      <!-- ═══ Generation I ═══ -->
+      <li class="person has-children">
+        <div class="person-row">
+          <div class="person-row__content">
+            <div class="person-avatar"></div>
+            <span class="toggle-icon">▾</span>
+            <span class="person-name">King George V</span>
+            <span class="spouse-badge">
+              ⚭ <span class="spouse-name">Queen Elizabeth, The Queen Mother</span>
+            </span>
+          </div>
+          <button class="details-btn" title="View details" aria-label="View details for King George V">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+        <ul class="children">
+
+          <!-- ═══ Generation II — Elizabeth II ═══ -->
+          <li class="person has-children">
+            <div class="person-row">
+              <div class="person-row__content">
+                <div class="person-avatar"></div>
+                <span class="toggle-icon">▾</span>
+                <span class="person-name">Queen Elizabeth II</span>
+                <span class="spouse-badge">
+                  ⚭ <span class="spouse-name">Prince Philip, Duke of Edinburgh</span>
+                </span>
+              </div>
+              <button class="details-btn" title="View details" aria-label="View details for Queen Elizabeth II">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <ul class="children">
+
+              <!-- ═══ Generation III — Charles (two marriages) ═══ -->
+              <li class="person has-children">
+                <div class="person-row">
+                  <div class="person-row__content">
+                    <div class="person-avatar"></div>
+                    <span class="toggle-icon">▸</span>
+                    <span class="person-name">Charles, Prince of Wales</span>
+                    <span class="spouse-badge deceased">
+                      ⚭ <span class="spouse-name">Diana, Princess of Wales</span>
+                    </span>
+                    <span class="spouse-badge">
+                      ⚭ <span class="spouse-name">Camilla, Duchess of Cornwall (2nd)</span>
+                    </span>
+                  </div>
+                  <button class="details-btn" title="View details" aria-label="View details for Charles, Prince of Wales">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                    </svg>
+                  </button>
+                </div>
+                <ul class="children collapsed">
+
+                  <!-- Generation IV — William -->
+                  <li class="person has-children">
+                    <div class="person-row">
+                      <div class="person-row__content">
+                        <div class="person-avatar"></div>
+                        <span class="toggle-icon">▸</span>
+                        <span class="person-name">Prince William, Duke of Cambridge</span>
+                        <span class="spouse-badge">
+                          ⚭ <span class="spouse-name">Catherine, Duchess of Cambridge</span>
+                        </span>
+                      </div>
+                      <button class="details-btn" title="View details" aria-label="View details for Prince William">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                        </svg>
+                      </button>
+                    </div>
+                    <ul class="children collapsed">
+
+                      <!-- Generation V — George -->
+                      <li class="person leaf">
+                        <div class="person-row">
+                          <div class="person-row__content">
+                            <div class="person-avatar"></div>
+                            <span class="person-name">Prince George of Cambridge</span>
+                          </div>
+                          <button class="details-btn" title="View details" aria-label="View details for Prince George">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                            </svg>
+                          </button>
+                        </div>
+                      </li>
+
+                      <!-- Generation V — Charlotte -->
+                      <li class="person leaf">
+                        <div class="person-row">
+                          <div class="person-row__content">
+                            <div class="person-avatar"></div>
+                            <span class="person-name">Princess Charlotte of Cambridge</span>
+                          </div>
+                          <button class="details-btn" title="View details" aria-label="View details for Princess Charlotte">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                            </svg>
+                          </button>
+                        </div>
+                      </li>
+
+                      <!-- Generation V — Louis -->
+                      <li class="person leaf">
+                        <div class="person-row">
+                          <div class="person-row__content">
+                            <div class="person-avatar"></div>
+                            <span class="person-name">Prince Louis of Cambridge</span>
+                          </div>
+                          <button class="details-btn" title="View details" aria-label="View details for Prince Louis">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                            </svg>
+                          </button>
+                        </div>
+                      </li>
+
+                    </ul>
+                  </li>
+
+                  <!-- Generation IV — Harry -->
+                  <li class="person leaf">
+                    <div class="person-row">
+                      <div class="person-row__content">
+                        <div class="person-avatar"></div>
+                        <span class="person-name">Prince Harry, Duke of Sussex</span>
+                        <span class="spouse-badge external">
+                          ⚭ <span class="spouse-name">Meghan Markle</span>
+                          <a href="#" class="ext-link" title="View Markle family tree">↗</a>
+                        </span>
+                      </div>
+                      <button class="details-btn" title="View details" aria-label="View details for Prince Harry">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </li>
+
+                </ul>
+              </li>
+
+              <!-- Generation III — Anne -->
+              <li class="person leaf">
+                <div class="person-row">
+                  <div class="person-row__content">
+                    <div class="person-avatar"></div>
+                    <span class="person-name">Princess Anne, Princess Royal</span>
+                  </div>
+                  <button class="details-btn" title="View details" aria-label="View details for Princess Anne">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                    </svg>
+                  </button>
+                </div>
+              </li>
+
+              <!-- Generation III — Andrew -->
+              <li class="person leaf">
+                <div class="person-row">
+                  <div class="person-row__content">
+                    <div class="person-avatar"></div>
+                    <span class="person-name">Prince Andrew, Duke of York</span>
+                  </div>
+                  <button class="details-btn" title="View details" aria-label="View details for Prince Andrew">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                    </svg>
+                  </button>
+                </div>
+              </li>
+
+              <!-- Generation III — Edward -->
+              <li class="person leaf">
+                <div class="person-row">
+                  <div class="person-row__content">
+                    <div class="person-avatar"></div>
+                    <span class="person-name">Prince Edward, Earl of Wessex</span>
+                  </div>
+                  <button class="details-btn" title="View details" aria-label="View details for Prince Edward">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                    </svg>
+                  </button>
+                </div>
+              </li>
+
+            </ul>
+          </li>
+
+          <!-- ═══ Generation II — Margaret ═══ -->
+          <li class="person leaf">
+            <div class="person-row">
+              <div class="person-row__content">
+                <div class="person-avatar"></div>
+                <span class="person-name">Princess Margaret, Countess of Snowdon</span>
+              </div>
+              <button class="details-btn" title="View details" aria-label="View details for Princess Margaret">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+          </li>
+
+        </ul>
+      </li>
+
+    </ul>
+
+    <!-- ═══════════════════════════════════════════
+         Details Dialog
+         ═══════════════════════════════════════════ -->
+    <div class="details-overlay" id="details-overlay" hidden>
+      <div class="details-dialog" role="dialog" aria-modal="true" aria-labelledby="details-name">
+        <button class="details-close" id="details-close" aria-label="Close">✕</button>
+
+        <div class="details-avatar-wrap">
+          <!-- Photo slot: swap .person-avatar for an <img> in the future -->
+          <div class="details-avatar" id="details-avatar"></div>
+        </div>
+
+        <h2 class="details-name" id="details-name"></h2>
+
+        <div class="details-spouses" id="details-spouses"></div>
+
+        <div class="details-meta">
+          <div class="details-meta-row">
+            <span class="details-meta-icon">📅</span>
+            <span class="details-meta-label">Born</span>
+            <span class="details-meta-value details-placeholder">—</span>
+          </div>
+          <div class="details-meta-row">
+            <span class="details-meta-icon">📅</span>
+            <span class="details-meta-label">Died</span>
+            <span class="details-meta-value details-placeholder">—</span>
+          </div>
+          <div class="details-meta-row">
+            <span class="details-meta-icon">📝</span>
+            <span class="details-meta-label">Notes</span>
+            <span class="details-meta-value details-placeholder">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>

@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Family Tree (Foldable List v2)</title>
+        <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="treeview-dynamic-add-remove-nodes-bada55/dist/style.css"
+        />
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap");
+
+            body {
+                font-family: "DM Sans", "Trebuchet MS", "Segoe UI", sans-serif;
+                background: radial-gradient(
+                    900px 500px at 10% 0%,
+                    #eef3ff 0%,
+                    #f6f7fb 45%,
+                    #f6f7fb 100%
+                );
+                margin: 0;
+                padding: 20px 12px 60px;
+            }
+
+            .page-title {
+                font-size: 26px;
+                font-weight: 700;
+                margin: 0 0 4px;
+            }
+
+            .page-subtitle {
+                margin: 0 0 18px;
+                color: #6c7284;
+            }
+
+            .treeview {
+                max-width: 760px;
+                margin: 0 auto;
+                background: rgba(255, 255, 255, 0.72);
+                border-radius: 18px;
+                padding: 16px 12px 6px;
+                border: 1px solid #e6e8f4;
+                box-shadow: 0 12px 24px rgba(25, 30, 55, 0.08);
+            }
+
+            .treeview__level {
+                border-radius: 14px;
+                padding: 10px 12px 10px 54px;
+                min-height: 64px;
+                display: inline-flex;
+                align-items: center;
+            }
+
+            .treeview__level:before {
+                font-weight: 700;
+                top: 4.5px;
+            }
+
+            .treeview > ul > li > .treeview__level:before {
+                top: 4.5px;
+            }
+
+            .level-title {
+                font-size: 16px;
+                font-weight: 700;
+            }
+
+            .level-meta {
+                display: block;
+                font-size: 12px;
+                font-weight: 400;
+                color: #6c7284;
+                margin-top: 2px;
+            }
+
+            @media (max-width: 560px) {
+                .treeview {
+                    padding: 12px 8px 2px;
+                }
+
+                .treeview ul {
+                    padding-left: 26px;
+                }
+
+                .treeview ul li {
+                    padding-left: 24px;
+                }
+
+                .treeview__level {
+                    padding-left: 52px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <h1 class="page-title">Family Tree</h1>
+            <p class="page-subtitle">
+                Tap the plus icon to add or fold branches.
+            </p>
+
+            <div class="treeview js-treeview">
+                <ul>
+                    <li>
+                        <div class="treeview__level" data-level="JA">
+                            <span class="level-title">
+                                James Adams
+                                <span class="level-meta">Patriarch</span>
+                            </span>
+                            <div class="treeview__level-btns">
+                                <div class="btn btn-default btn-sm level-add">
+                                    <span class="fa fa-plus"></span>
+                                </div>
+                                <div
+                                    class="btn btn-default btn-sm level-remove"
+                                >
+                                    <span
+                                        class="fa fa-trash text-danger"
+                                    ></span>
+                                </div>
+                                <div class="btn btn-default btn-sm level-same">
+                                    <span>Add Same Level</span>
+                                </div>
+                                <div class="btn btn-default btn-sm level-sub">
+                                    <span>Add Sub Level</span>
+                                </div>
+                            </div>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="treeview__level" data-level="MT">
+                                    <span class="level-title">
+                                        Maria Thompson
+                                        <span class="level-meta">Spouse</span>
+                                    </span>
+                                    <div class="treeview__level-btns">
+                                        <div
+                                            class="btn btn-default btn-sm level-add"
+                                        >
+                                            <span class="fa fa-plus"></span>
+                                        </div>
+                                        <div
+                                            class="btn btn-default btn-sm level-remove"
+                                        >
+                                            <span
+                                                class="fa fa-trash text-danger"
+                                            ></span>
+                                        </div>
+                                        <div
+                                            class="btn btn-default btn-sm level-same"
+                                        >
+                                            <span>Add Same Level</span>
+                                        </div>
+                                        <div
+                                            class="btn btn-default btn-sm level-sub"
+                                        >
+                                            <span>Add Sub Level</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <div
+                                            class="treeview__level"
+                                            data-level="LS"
+                                        >
+                                            <span class="level-title">
+                                                Liam Scott
+                                                <span class="level-meta"
+                                                    >Son</span
+                                                >
+                                            </span>
+                                            <div class="treeview__level-btns">
+                                                <div
+                                                    class="btn btn-default btn-sm level-add"
+                                                >
+                                                    <span
+                                                        class="fa fa-plus"
+                                                    ></span>
+                                                </div>
+                                                <div
+                                                    class="btn btn-default btn-sm level-remove"
+                                                >
+                                                    <span
+                                                        class="fa fa-trash text-danger"
+                                                    ></span>
+                                                </div>
+                                                <div
+                                                    class="btn btn-default btn-sm level-same"
+                                                >
+                                                    <span>Add Same Level</span>
+                                                </div>
+                                                <div
+                                                    class="btn btn-default btn-sm level-sub"
+                                                >
+                                                    <span>Add Sub Level</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <ul>
+                                            <li>
+                                                <div
+                                                    class="treeview__level"
+                                                    data-level="EM"
+                                                >
+                                                    <span class="level-title">
+                                                        Eva Moore
+                                                        <span class="level-meta"
+                                                            >Granddaughter</span
+                                                        >
+                                                    </span>
+                                                    <div
+                                                        class="treeview__level-btns"
+                                                    >
+                                                        <div
+                                                            class="btn btn-default btn-sm level-add"
+                                                        >
+                                                            <span
+                                                                class="fa fa-plus"
+                                                            ></span>
+                                                        </div>
+                                                        <div
+                                                            class="btn btn-default btn-sm level-remove"
+                                                        >
+                                                            <span
+                                                                class="fa fa-trash text-danger"
+                                                            ></span>
+                                                        </div>
+                                                        <div
+                                                            class="btn btn-default btn-sm level-same"
+                                                        >
+                                                            <span
+                                                                >Add Same
+                                                                Level</span
+                                                            >
+                                                        </div>
+                                                        <div
+                                                            class="btn btn-default btn-sm level-sub"
+                                                        >
+                                                            <span
+                                                                >Add Sub
+                                                                Level</span
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <ul></ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <div
+                                            class="treeview__level"
+                                            data-level="NA"
+                                        >
+                                            <span class="level-title">
+                                                Nora Adams
+                                                <span class="level-meta"
+                                                    >Daughter</span
+                                                >
+                                            </span>
+                                            <div class="treeview__level-btns">
+                                                <div
+                                                    class="btn btn-default btn-sm level-add"
+                                                >
+                                                    <span
+                                                        class="fa fa-plus"
+                                                    ></span>
+                                                </div>
+                                                <div
+                                                    class="btn btn-default btn-sm level-remove"
+                                                >
+                                                    <span
+                                                        class="fa fa-trash text-danger"
+                                                    ></span>
+                                                </div>
+                                                <div
+                                                    class="btn btn-default btn-sm level-same"
+                                                >
+                                                    <span>Add Same Level</span>
+                                                </div>
+                                                <div
+                                                    class="btn btn-default btn-sm level-sub"
+                                                >
+                                                    <span>Add Sub Level</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <ul></ul>
+                                    </li>
+
+                                    <li>
+                                        <div
+                                            class="treeview__level"
+                                            data-level="RS"
+                                        >
+                                            <span class="level-title">
+                                                Rowan Scott
+                                                <span class="level-meta"
+                                                    >Son</span
+                                                >
+                                            </span>
+                                            <div class="treeview__level-btns">
+                                                <div
+                                                    class="btn btn-default btn-sm level-add"
+                                                >
+                                                    <span
+                                                        class="fa fa-plus"
+                                                    ></span>
+                                                </div>
+                                                <div
+                                                    class="btn btn-default btn-sm level-remove"
+                                                >
+                                                    <span
+                                                        class="fa fa-trash text-danger"
+                                                    ></span>
+                                                </div>
+                                                <div
+                                                    class="btn btn-default btn-sm level-same"
+                                                >
+                                                    <span>Add Same Level</span>
+                                                </div>
+                                                <div
+                                                    class="btn btn-default btn-sm level-sub"
+                                                >
+                                                    <span>Add Sub Level</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <ul>
+                                            <li>
+                                                <div
+                                                    class="treeview__level"
+                                                    data-level="HS"
+                                                >
+                                                    <span class="level-title">
+                                                        Hazel Scott
+                                                        <span class="level-meta"
+                                                            >Granddaughter</span
+                                                        >
+                                                    </span>
+                                                    <div
+                                                        class="treeview__level-btns"
+                                                    >
+                                                        <div
+                                                            class="btn btn-default btn-sm level-add"
+                                                        >
+                                                            <span
+                                                                class="fa fa-plus"
+                                                            ></span>
+                                                        </div>
+                                                        <div
+                                                            class="btn btn-default btn-sm level-remove"
+                                                        >
+                                                            <span
+                                                                class="fa fa-trash text-danger"
+                                                            ></span>
+                                                        </div>
+                                                        <div
+                                                            class="btn btn-default btn-sm level-same"
+                                                        >
+                                                            <span
+                                                                >Add Same
+                                                                Level</span
+                                                            >
+                                                        </div>
+                                                        <div
+                                                            class="btn btn-default btn-sm level-sub"
+                                                        >
+                                                            <span
+                                                                >Add Sub
+                                                                Level</span
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <ul></ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <div class="treeview__level" data-level="KG">
+                                    <span class="level-title">
+                                        Kai Green
+                                        <span class="level-meta">Brother</span>
+                                    </span>
+                                    <div class="treeview__level-btns">
+                                        <div
+                                            class="btn btn-default btn-sm level-add"
+                                        >
+                                            <span class="fa fa-plus"></span>
+                                        </div>
+                                        <div
+                                            class="btn btn-default btn-sm level-remove"
+                                        >
+                                            <span
+                                                class="fa fa-trash text-danger"
+                                            ></span>
+                                        </div>
+                                        <div
+                                            class="btn btn-default btn-sm level-same"
+                                        >
+                                            <span>Add Same Level</span>
+                                        </div>
+                                        <div
+                                            class="btn btn-default btn-sm level-sub"
+                                        >
+                                            <span>Add Sub Level</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul></ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </main>
+
+        <template id="levelMarkup">
+            <li>
+                <div class="treeview__level" data-level="NP">
+                    <span class="level-title">
+                        New Person
+                        <span class="level-meta">New</span>
+                    </span>
+                    <div class="treeview__level-btns">
+                        <div class="btn btn-default btn-sm level-add">
+                            <span class="fa fa-plus"></span>
+                        </div>
+                        <div class="btn btn-default btn-sm level-remove">
+                            <span class="fa fa-trash text-danger"></span>
+                        </div>
+                        <div class="btn btn-default btn-sm level-same">
+                            <span>Add Same Level</span>
+                        </div>
+                        <div class="btn btn-default btn-sm level-sub">
+                            <span>Add Sub Level</span>
+                        </div>
+                    </div>
+                </div>
+                <ul></ul>
+            </li>
+        </template>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="treeview-dynamic-add-remove-nodes-bada55/dist/script.js"></script>
+    </body>
+</html>
