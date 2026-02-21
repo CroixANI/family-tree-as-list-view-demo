@@ -651,6 +651,12 @@ main {
     color: var(--text-primary);
 }
 
+.details-bio-content:focus {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+    border-radius: 6px;
+}
+
 .details-bio-content > :first-child {
     margin-top: 0;
 }
