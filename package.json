@@ -6,10 +6,11 @@
   "scripts": {
     "build": "node scripts/clean-output.js && eleventy",
     "start": "eleventy --serve",
-    "photos:demo": "node scripts/generate-demo-photos.js royal-family-files"
+    "photos:demo": "node scripts/generate-demo-photos.js"
   },
   "dependencies": {
     "@11ty/eleventy": "^3.1.2",
+    "dotenv": "^17.2.3",
     "markdown-it": "^14.1.0"
   }
 }

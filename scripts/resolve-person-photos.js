@@ -3,9 +3,9 @@
 
 const fs = require('fs');
 const path = require('path');
+const { getProjectConfig } = require('../config/env');
 
 const IMAGE_EXT_FALLBACK_ORDER = ['.png', '.jpg', '.jpeg', '.webp', '.avif'];
-const DEFAULT_ROOT = 'royal-family-files';
 
 function walk(dir, out = []) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
@@ -106,7 +106,8 @@ function isPersonMarkdown(fileAbs) {
 
 function main() {
   const workspaceRootAbs = process.cwd();
-  const rootArg = process.argv[2] || DEFAULT_ROOT;
+  const config = getProjectConfig(workspaceRootAbs);
+  const rootArg = process.argv[2] || config.familyDataDir;
   const rootAbs = path.resolve(workspaceRootAbs, rootArg);
 
   if (!fs.existsSync(rootAbs) || !fs.statSync(rootAbs).isDirectory()) {

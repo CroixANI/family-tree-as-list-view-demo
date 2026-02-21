@@ -4,9 +4,9 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { getProjectConfig } = require('../config/env');
 
 const IMAGE_EXTS = ['.png', '.jpg', '.jpeg', '.webp', '.avif'];
-const DEFAULT_DATA_DIR = 'royal-family-files';
 const SIZE = 240;
 
 function walkMarkdown(dir, out = []) {
@@ -75,7 +75,8 @@ function download(url, outputPath) {
 
 async function main() {
   const root = process.cwd();
-  const dataDirArg = process.argv[2] || DEFAULT_DATA_DIR;
+  const config = getProjectConfig(root);
+  const dataDirArg = process.argv[2] || config.familyDataDir;
   const force = process.argv.includes('--force');
   const dataDir = path.resolve(root, dataDirArg);
 

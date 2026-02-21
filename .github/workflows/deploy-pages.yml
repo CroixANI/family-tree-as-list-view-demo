@@ -18,6 +18,11 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      FAMILY_DATA_DIR: ${{ vars.FAMILY_DATA_DIR || 'examples/royal-family-files' }}
+      FAMILY_ROOT_PERSON: ${{ vars.FAMILY_ROOT_PERSON }}
+      SITE_OUTPUT_DIR: ${{ vars.SITE_OUTPUT_DIR || 'output' }}
+      AVATARS_SUBDIR: ${{ vars.AVATARS_SUBDIR || 'avatars' }}
 
     steps:
       - name: Checkout
@@ -39,13 +44,12 @@ jobs:
       - name: Build static site
         run: npm run build
         env:
-          FAMILY_DATA_DIR: royal-family-files
           ELEVENTY_PATH_PREFIX: ${{ steps.pages.outputs.base_path }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: output
+          path: ${{ env.SITE_OUTPUT_DIR }}
 
   deploy:
     environment:

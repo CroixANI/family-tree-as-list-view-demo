@@ -8,26 +8,45 @@ This project builds a static family-tree website from folder-based markdown data
 npm install
 ```
 
+## Configure with `.env` (recommended)
+
+Copy the template and edit values as needed:
+
+```bash
+cp .env.example .env
+```
+
+Environment variables (all optional):
+
+- `FAMILY_DATA_DIR` (default: `examples/royal-family-files`)
+- `FAMILY_ROOT_PERSON` (default: empty; auto-picks root)
+- `SITE_INPUT_DIR` (default: `site`)
+- `SITE_INCLUDES_DIR` (default: `_includes`)
+- `SITE_DATA_DIR` (default: `_data`)
+- `SITE_OUTPUT_DIR` (default: `output`)
+- `AVATARS_SUBDIR` (default: `avatars`)
+- `ELEVENTY_PATH_PREFIX` (default: `/`)
+
 ## Build
 
-Default source folder:
+With `.env` defaults:
 
 ```bash
 npm run build
 ```
 
-The generated static site is written to `output/`.
+The generated static site is written to `SITE_OUTPUT_DIR` (default `output/`).
 
-Use a different family folder:
+Override a value ad-hoc without editing `.env`:
 
 ```bash
-FAMILY_DATA_DIR=my-family-files npm run build
+FAMILY_DATA_DIR=examples/my-family-files npm run build
 ```
 
 Optionally select an explicit root person:
 
 ```bash
-FAMILY_DATA_DIR=my-family-files FAMILY_ROOT_PERSON="Jane Doe" npm run build
+FAMILY_DATA_DIR=examples/my-family-files FAMILY_ROOT_PERSON="Jane Doe" npm run build
 ```
 
 Build for a GitHub Pages project path (for example `/my-repo/`):
@@ -36,10 +55,24 @@ Build for a GitHub Pages project path (for example `/my-repo/`):
 ELEVENTY_PATH_PREFIX=/my-repo/ npm run build
 ```
 
+Quick test with the fake Smith dataset:
+
+```bash
+FAMILY_DATA_DIR=examples/smith-family-files npm run build
+```
+
 ## Run locally
 
 ```bash
 npm start
+```
+
+Important: `npm run start` (`eleventy --serve`) also rebuilds from source, so it uses the same env vars as build.
+
+Use a non-default family source while serving:
+
+```bash
+FAMILY_DATA_DIR=examples/smith-family-files npm run start
 ```
 
 Open a specific person by ID (auto-expand ancestors + highlight row):
@@ -84,8 +117,8 @@ photo: https://example.com/person.png
 - During build, if `id` is missing in a person file, it is auto-generated and written back once.
 - Existing `id` values are preserved.
 - Local person photos are copied to:
-  - `output/avatars/<person-id>.<ext>`
-- Generated HTML uses `/avatars/<person-id>.<ext>` paths, avoiding long/special-character folder URLs.
+  - `<SITE_OUTPUT_DIR>/<AVATARS_SUBDIR>/<person-id>.<ext>`
+- Generated HTML uses `/<AVATARS_SUBDIR>/<person-id>.<ext>` paths (with Eleventy path prefix applied).
 
 Generate demo photos automatically for the current royal dataset:
 
@@ -96,4 +129,11 @@ npm run photos:demo
 ## GitHub Pages
 
 A workflow is provided at `.github/workflows/deploy-pages.yml`.
-It builds the site and deploys `output/` to GitHub Pages.
+It builds the site and deploys `SITE_OUTPUT_DIR` to GitHub Pages.
+
+For CI configuration, set repository Variables in GitHub (`Settings -> Secrets and variables -> Actions -> Variables`) such as:
+
+- `FAMILY_DATA_DIR`
+- `FAMILY_ROOT_PERSON`
+- `SITE_OUTPUT_DIR`
+- `AVATARS_SUBDIR`

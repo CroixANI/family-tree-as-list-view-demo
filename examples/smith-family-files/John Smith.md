@@ -1,5 +1,6 @@
 ---
 full_name: John Smith
+id: 84da3fef-287b-4194-b870-3e83dce18d21
 born: 1895-12-14
 died: 1952-02-06
 birth_place: Sandringham, Norfolk
