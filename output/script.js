@@ -345,5 +345,41 @@ function setupNodeToggles() {
   }
 }
 
+function applyPersonSelectionFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const pid = (params.get('pid') || '').trim();
+  if (!pid) return;
+
+  document.querySelectorAll('.person-row.is-active').forEach(row => row.classList.remove('is-active'));
+  document.querySelectorAll('.person [aria-current=\"true\"]').forEach(el => el.removeAttribute('aria-current'));
+
+  const escapedPid = window.CSS && typeof window.CSS.escape === 'function'
+    ? window.CSS.escape(pid)
+    : pid.replace(/\"/g, '\\\"');
+  const personLi = document.querySelector(`.person[data-person-id=\"${escapedPid}\"]`);
+  if (!personLi) {
+    announce(`Person with id ${pid} was not found in this tree.`);
+    return;
+  }
+
+  let ancestor = personLi.parentElement ? personLi.parentElement.closest('.person.has-children') : null;
+  while (ancestor) {
+    setExpanded(ancestor, true);
+    ancestor = ancestor.parentElement ? ancestor.parentElement.closest('.person.has-children') : null;
+  }
+
+  const row = personLi.querySelector(':scope > .person-row');
+  const name = personLi.querySelector(':scope > .person-row .person-name');
+  if (row) row.classList.add('is-active');
+  if (name) name.setAttribute('aria-current', 'true');
+
+  if (row) {
+    row.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+  }
+
+  announce(`Focused ${name ? name.textContent.trim() : 'selected person'} from URL.`);
+}
+
 setupNodeToggles();
 setupDetailsOverlay();
+applyPersonSelectionFromUrl();

@@ -14,7 +14,7 @@
 {% set hasChildren = person.children.length > 0 %}
 {% set isExpandedByDefault = depth < 2 %}
 {% set childrenId = 'children-' ~ person.id %}
-<li class="person{% if person.children.length %} has-children{% else %} leaf{% endif %}" data-depth="{{ depth }}">
+<li class="person{% if person.children.length %} has-children{% else %} leaf{% endif %}" data-depth="{{ depth }}" data-person-id="{{ person.id }}">
   <div class="person-row" data-born="{{ person.born }}" data-died="{{ person.died }}">
     <div class="person-row__content">
       <div class="person-avatar">{{ photoImg(person.photo, person.initials, 'person-photo', person.fullName ~ ' portrait') }}</div>

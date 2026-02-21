@@ -42,6 +42,12 @@ ELEVENTY_PATH_PREFIX=/my-repo/ npm run build
 npm start
 ```
 
+Open a specific person by ID (auto-expand ancestors + highlight row):
+
+```text
+http://localhost:8082/?pid=<person-id>
+```
+
 ## Source data format
 
 - Person file: `Person Name.md`

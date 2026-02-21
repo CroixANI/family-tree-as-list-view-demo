@@ -178,6 +178,14 @@ main {
     box-shadow: 0 3px 10px rgba(201, 168, 76, 0.25);
 }
 
+.person-row.is-active {
+    border-color: #2f64b8;
+    box-shadow:
+        0 0 0 3px rgba(47, 100, 184, 0.2),
+        0 2px 8px rgba(23, 43, 77, 0.18);
+    background: #f4f8ff;
+}
+
 .person-avatar {
     width: 48px;
     height: 48px;
