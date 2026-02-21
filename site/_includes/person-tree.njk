@@ -11,20 +11,32 @@
 {% endmacro %}
 
 {% macro renderPerson(person, depth) %}
+{% set hasChildren = person.children.length > 0 %}
+{% set isExpandedByDefault = depth < 2 %}
+{% set childrenId = ('children-' ~ person.relPath) | replace('/', '-') | replace(' ', '-') | replace('&', 'and') | replace(',', '') | replace('.', '') | replace('(', '') | replace(')', '') %}
 <li class="person{% if person.children.length %} has-children{% else %} leaf{% endif %}" data-depth="{{ depth }}">
   <div class="person-row">
     <div class="person-row__content">
       <div class="person-avatar">{{ photoImg(person.photo, person.initials, 'person-photo', person.fullName ~ ' portrait') }}</div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="View details for {{ person.fullName }}">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for {{ person.fullName }}" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
         </svg>
       </button>
-      {% if person.children.length %}
-        <span class="toggle-icon">▾</span>
+      {% if hasChildren %}
+        <button
+          class="toggle-btn"
+          type="button"
+          aria-controls="{{ childrenId }}"
+          aria-expanded="{% if isExpandedByDefault %}true{% else %}false{% endif %}"
+          aria-label="{% if isExpandedByDefault %}Collapse{% else %}Expand{% endif %} descendants of {{ person.fullName }}"
+        >
+          <span class="toggle-icon" aria-hidden="true">{% if isExpandedByDefault %}▾{% else %}▸{% endif %}</span>
+        </button>
       {% else %}
-        <span class="toggle-icon leaf-icon">•</span>
+        <span class="toggle-icon leaf-icon" aria-hidden="true">•</span>
+        <span class="sr-only">No children recorded for {{ person.fullName }}</span>
       {% endif %}
 
       <span class="person-name">{{ person.fullName }}</span>
@@ -36,7 +48,7 @@
           data-initials="{{ spouse.initials }}"
         >
           <span class="spouse-avatar">{{ photoImg(spouse.photo, spouse.initials, 'spouse-photo', spouse.fullName ~ ' portrait') }}</span>
-          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="View details for {{ spouse.fullName }}">
+          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="Open details dialog for {{ spouse.fullName }}" aria-haspopup="dialog">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle>
@@ -49,15 +61,15 @@
           </span>
           <span class="spouse-name">{{ spouse.fullName }}</span>
           {% if spouse.external and spouse.externalUrl %}
-            <a href="{{ spouse.externalUrl }}" class="ext-link" title="Open spouse external link" target="_blank" rel="noopener noreferrer">↗</a>
+            <a href="{{ spouse.externalUrl }}" class="ext-link" title="Open spouse external link" aria-label="Open external family link for {{ spouse.fullName }} (opens in new tab)" target="_blank" rel="noopener noreferrer">↗</a>
           {% endif %}
         </span>
       {% endfor %}
     </div>
   </div>
 
-  {% if person.children.length %}
-    <ul class="children{% if depth >= 2 %} collapsed{% endif %}">
+  {% if hasChildren %}
+    <ul id="{{ childrenId }}" class="children{% if not isExpandedByDefault %} collapsed{% endif %}">
       {% for child in person.children %}
         {{ renderPerson(child, depth + 1) }}
       {% endfor %}

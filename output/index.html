@@ -22,15 +22,20 @@
   <p class="tree-source">Source folder: <code>royal-family-files</code></p>
 
   <div class="controls">
-    <button id="expand-all" type="button">Expand All</button>
-    <button id="collapse-all" type="button">Collapse All</button>
+    <button id="expand-all" type="button" aria-label="Expand all family branches">Expand All</button>
+    <button id="collapse-all" type="button" aria-label="Collapse all family branches except the root">Collapse All</button>
   </div>
 </header>
 
 <main>
+  <p id="a11y-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+
   
     <ul class="family-tree">
       
+
+
+
 <li class="person has-children" data-depth="0">
   <div class="person-row">
     <div class="person-row__content">
@@ -41,14 +46,22 @@
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="View details for King George V">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for King George V" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
         </svg>
       </button>
       
-        <span class="toggle-icon">▾</span>
+        <button
+          class="toggle-btn"
+          type="button"
+          aria-controls="children-royal-family-files-King-George-Vmd"
+          aria-expanded="true"
+          aria-label="Collapse descendants of King George V"
+        >
+          <span class="toggle-icon" aria-hidden="true">▾</span>
+        </button>
       
 
       <span class="person-name">King George V</span>
@@ -66,7 +79,7 @@
     
   
 </span>
-          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="View details for Queen Elizabeth, The Queen Mother">
+          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="Open details dialog for Queen Elizabeth, The Queen Mother" aria-haspopup="dialog">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle>
@@ -85,9 +98,12 @@
   </div>
 
   
-    <ul class="children">
+    <ul id="children-royal-family-files-King-George-Vmd" class="children">
       
         
+
+
+
 <li class="person has-children" data-depth="1">
   <div class="person-row">
     <div class="person-row__content">
@@ -98,14 +114,22 @@
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="View details for Queen Elizabeth II">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Queen Elizabeth II" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
         </svg>
       </button>
       
-        <span class="toggle-icon">▾</span>
+        <button
+          class="toggle-btn"
+          type="button"
+          aria-controls="children-royal-family-files-King-George-V-and-Queen-Elizabeth-The-Queen-Mother-Queen-Elizabeth-IImd"
+          aria-expanded="true"
+          aria-label="Collapse descendants of Queen Elizabeth II"
+        >
+          <span class="toggle-icon" aria-hidden="true">▾</span>
+        </button>
       
 
       <span class="person-name">Queen Elizabeth II</span>
@@ -123,7 +147,7 @@
     
   
 </span>
-          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="View details for Prince Philip, Duke of Edinburgh">
+          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="Open details dialog for Prince Philip, Duke of Edinburgh" aria-haspopup="dialog">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle>
@@ -142,9 +166,12 @@
   </div>
 
   
-    <ul class="children">
+    <ul id="children-royal-family-files-King-George-V-and-Queen-Elizabeth-The-Queen-Mother-Queen-Elizabeth-IImd" class="children">
       
         
+
+
+
 <li class="person has-children" data-depth="2">
   <div class="person-row">
     <div class="person-row__content">
@@ -155,14 +182,22 @@
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="View details for Charles, Prince of Wales">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Charles, Prince of Wales" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
         </svg>
       </button>
       
-        <span class="toggle-icon">▾</span>
+        <button
+          class="toggle-btn"
+          type="button"
+          aria-controls="children-royal-family-files-King-George-V-and-Queen-Elizabeth-The-Queen-Mother-Queen-Elizabeth-II-and-Prince-Philip-Duke-of-Edinburgh-Charles-Prince-of-Walesmd"
+          aria-expanded="false"
+          aria-label="Expand descendants of Charles, Prince of Wales"
+        >
+          <span class="toggle-icon" aria-hidden="true">▸</span>
+        </button>
       
 
       <span class="person-name">Charles, Prince of Wales</span>
@@ -180,7 +215,7 @@
     
   
 </span>
-          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="View details for Diana, Princess of Wales">
+          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="Open details dialog for Diana, Princess of Wales" aria-haspopup="dialog">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle>
@@ -207,7 +242,7 @@
     
   
 </span>
-          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="View details for Camilla, Duchess of Cornwall (2nd)">
+          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="Open details dialog for Camilla, Duchess of Cornwall (2nd)" aria-haspopup="dialog">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle>
@@ -226,9 +261,12 @@
   </div>
 
   
-    <ul class="children collapsed">
+    <ul id="children-royal-family-files-King-George-V-and-Queen-Elizabeth-The-Queen-Mother-Queen-Elizabeth-II-and-Prince-Philip-Duke-of-Edinburgh-Charles-Prince-of-Walesmd" class="children collapsed">
       
         
+
+
+
 <li class="person has-children" data-depth="3">
   <div class="person-row">
     <div class="person-row__content">
@@ -239,14 +277,22 @@
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="View details for Prince William, Duke of Cambridge">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Prince William, Duke of Cambridge" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
         </svg>
       </button>
       
-        <span class="toggle-icon">▾</span>
+        <button
+          class="toggle-btn"
+          type="button"
+          aria-controls="children-royal-family-files-King-George-V-and-Queen-Elizabeth-The-Queen-Mother-Queen-Elizabeth-II-and-Prince-Philip-Duke-of-Edinburgh-Charles-Prince-of-Wales-and-Diana-Princess-of-Wales-Prince-William-Duke-of-Cambridgemd"
+          aria-expanded="false"
+          aria-label="Expand descendants of Prince William, Duke of Cambridge"
+        >
+          <span class="toggle-icon" aria-hidden="true">▸</span>
+        </button>
       
 
       <span class="person-name">Prince William, Duke of Cambridge</span>
@@ -264,7 +310,7 @@
     
   
 </span>
-          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="View details for Catherine, Duchess of Cambridge">
+          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="Open details dialog for Catherine, Duchess of Cambridge" aria-haspopup="dialog">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle>
@@ -283,9 +329,12 @@
   </div>
 
   
-    <ul class="children collapsed">
+    <ul id="children-royal-family-files-King-George-V-and-Queen-Elizabeth-The-Queen-Mother-Queen-Elizabeth-II-and-Prince-Philip-Duke-of-Edinburgh-Charles-Prince-of-Wales-and-Diana-Princess-of-Wales-Prince-William-Duke-of-Cambridgemd" class="children collapsed">
       
         
+
+
+
 <li class="person leaf" data-depth="4">
   <div class="person-row">
     <div class="person-row__content">
@@ -296,14 +345,15 @@
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="View details for Prince George of Cambridge">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Prince George of Cambridge" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
         </svg>
       </button>
       
-        <span class="toggle-icon leaf-icon">•</span>
+        <span class="toggle-icon leaf-icon" aria-hidden="true">•</span>
+        <span class="sr-only">No children recorded for Prince George of Cambridge</span>
       
 
       <span class="person-name">Prince George of Cambridge</span>
@@ -317,6 +367,9 @@
 
       
         
+
+
+
 <li class="person leaf" data-depth="4">
   <div class="person-row">
     <div class="person-row__content">
@@ -327,14 +380,15 @@
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="View details for Princess Charlotte of Cambridge">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Princess Charlotte of Cambridge" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
         </svg>
       </button>
       
-        <span class="toggle-icon leaf-icon">•</span>
+        <span class="toggle-icon leaf-icon" aria-hidden="true">•</span>
+        <span class="sr-only">No children recorded for Princess Charlotte of Cambridge</span>
       
 
       <span class="person-name">Princess Charlotte of Cambridge</span>
@@ -348,6 +402,9 @@
 
       
         
+
+
+
 <li class="person leaf" data-depth="4">
   <div class="person-row">
     <div class="person-row__content">
@@ -358,14 +415,15 @@
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="View details for Prince Louis of Cambridge">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Prince Louis of Cambridge" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
         </svg>
       </button>
       
-        <span class="toggle-icon leaf-icon">•</span>
+        <span class="toggle-icon leaf-icon" aria-hidden="true">•</span>
+        <span class="sr-only">No children recorded for Prince Louis of Cambridge</span>
       
 
       <span class="person-name">Prince Louis of Cambridge</span>
@@ -384,6 +442,9 @@
 
       
         
+
+
+
 <li class="person leaf" data-depth="3">
   <div class="person-row">
     <div class="person-row__content">
@@ -394,14 +455,15 @@
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="View details for Prince Harry, Duke of Sussex">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Prince Harry, Duke of Sussex" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
         </svg>
       </button>
       
-        <span class="toggle-icon leaf-icon">•</span>
+        <span class="toggle-icon leaf-icon" aria-hidden="true">•</span>
+        <span class="sr-only">No children recorded for Prince Harry, Duke of Sussex</span>
       
 
       <span class="person-name">Prince Harry, Duke of Sussex</span>
@@ -419,7 +481,7 @@
     
   
 </span>
-          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="View details for Meghan Markle">
+          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="Open details dialog for Meghan Markle" aria-haspopup="dialog">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle>
@@ -432,7 +494,7 @@
           </span>
           <span class="spouse-name">Meghan Markle</span>
           
-            <a href="https://en.wikipedia.org/wiki/Meghan,_Duchess_of_Sussex" class="ext-link" title="Open spouse external link" target="_blank" rel="noopener noreferrer">↗</a>
+            <a href="https://en.wikipedia.org/wiki/Meghan,_Duchess_of_Sussex" class="ext-link" title="Open spouse external link" aria-label="Open external family link for Meghan Markle (opens in new tab)" target="_blank" rel="noopener noreferrer">↗</a>
           
         </span>
       
@@ -449,6 +511,9 @@
 
       
         
+
+
+
 <li class="person leaf" data-depth="2">
   <div class="person-row">
     <div class="person-row__content">
@@ -459,14 +524,15 @@
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="View details for Princess Anne, Princess Royal">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Princess Anne, Princess Royal" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
         </svg>
       </button>
       
-        <span class="toggle-icon leaf-icon">•</span>
+        <span class="toggle-icon leaf-icon" aria-hidden="true">•</span>
+        <span class="sr-only">No children recorded for Princess Anne, Princess Royal</span>
       
 
       <span class="person-name">Princess Anne, Princess Royal</span>
@@ -480,6 +546,9 @@
 
       
         
+
+
+
 <li class="person leaf" data-depth="2">
   <div class="person-row">
     <div class="person-row__content">
@@ -490,14 +559,15 @@
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="View details for Prince Andrew, Duke of York">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Prince Andrew, Duke of York" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
         </svg>
       </button>
       
-        <span class="toggle-icon leaf-icon">•</span>
+        <span class="toggle-icon leaf-icon" aria-hidden="true">•</span>
+        <span class="sr-only">No children recorded for Prince Andrew, Duke of York</span>
       
 
       <span class="person-name">Prince Andrew, Duke of York</span>
@@ -511,6 +581,9 @@
 
       
         
+
+
+
 <li class="person leaf" data-depth="2">
   <div class="person-row">
     <div class="person-row__content">
@@ -521,14 +594,15 @@
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="View details for Prince Edward, Earl of Wessex">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Prince Edward, Earl of Wessex" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
         </svg>
       </button>
       
-        <span class="toggle-icon leaf-icon">•</span>
+        <span class="toggle-icon leaf-icon" aria-hidden="true">•</span>
+        <span class="sr-only">No children recorded for Prince Edward, Earl of Wessex</span>
       
 
       <span class="person-name">Prince Edward, Earl of Wessex</span>
@@ -547,6 +621,9 @@
 
       
         
+
+
+
 <li class="person leaf" data-depth="1">
   <div class="person-row">
     <div class="person-row__content">
@@ -557,14 +634,15 @@
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="View details for Princess Margaret, Countess of Snowdon">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Princess Margaret, Countess of Snowdon" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
         </svg>
       </button>
       
-        <span class="toggle-icon leaf-icon">•</span>
+        <span class="toggle-icon leaf-icon" aria-hidden="true">•</span>
+        <span class="sr-only">No children recorded for Princess Margaret, Countess of Snowdon</span>
       
 
       <span class="person-name">Princess Margaret, Countess of Snowdon</span>
@@ -585,8 +663,9 @@
   
 
   <div class="details-overlay" id="details-overlay" hidden>
-    <div class="details-dialog" role="dialog" aria-modal="true" aria-labelledby="details-name">
-      <button class="details-close" id="details-close" aria-label="Close">✕</button>
+    <div class="details-dialog" id="details-dialog" role="dialog" aria-modal="true" aria-labelledby="details-name" aria-describedby="details-context" tabindex="-1">
+      <p id="details-context" class="sr-only">Details dialog. Press Escape to close. Tab stays inside the dialog.</p>
+      <button class="details-close" id="details-close" aria-label="Close details dialog">✕</button>
 
       <div class="details-avatar-wrap">
         <div class="details-avatar" id="details-avatar"></div>

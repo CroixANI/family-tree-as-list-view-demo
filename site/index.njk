@@ -11,12 +11,14 @@ title: Family Tree
   <p class="tree-source">Source folder: <code>{{ familyTree.sourceDir }}</code></p>
 
   <div class="controls">
-    <button id="expand-all" type="button">Expand All</button>
-    <button id="collapse-all" type="button">Collapse All</button>
+    <button id="expand-all" type="button" aria-label="Expand all family branches">Expand All</button>
+    <button id="collapse-all" type="button" aria-label="Collapse all family branches except the root">Collapse All</button>
   </div>
 </header>
 
 <main>
+  <p id="a11y-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+
   {% if familyTree.error %}
     <div class="build-error">
       <h2>Build Input Error</h2>
@@ -35,8 +37,9 @@ title: Family Tree
   {% endif %}
 
   <div class="details-overlay" id="details-overlay" hidden>
-    <div class="details-dialog" role="dialog" aria-modal="true" aria-labelledby="details-name">
-      <button class="details-close" id="details-close" aria-label="Close">✕</button>
+    <div class="details-dialog" id="details-dialog" role="dialog" aria-modal="true" aria-labelledby="details-name" aria-describedby="details-context" tabindex="-1">
+      <p id="details-context" class="sr-only">Details dialog. Press Escape to close. Tab stays inside the dialog.</p>
+      <button class="details-close" id="details-close" aria-label="Close details dialog">✕</button>
 
       <div class="details-avatar-wrap">
         <div class="details-avatar" id="details-avatar"></div>

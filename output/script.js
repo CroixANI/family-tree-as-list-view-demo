@@ -1,5 +1,7 @@
 'use strict';
 
+const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 function initials(name) {
   return String(name || '')
     .split(/\s+/)
@@ -10,12 +12,39 @@ function initials(name) {
     .toUpperCase();
 }
 
-function setExpanded(li, expand) {
+function announce(message) {
+  const status = document.getElementById('a11y-status');
+  if (!status) return;
+
+  status.textContent = '';
+  window.setTimeout(() => {
+    status.textContent = message;
+  }, 10);
+}
+
+function getPersonNameFromLi(li) {
+  return li?.querySelector(':scope > .person-row .person-name')?.textContent.trim() || 'this person';
+}
+
+function setExpanded(li, expand, announceChange = false) {
   const children = li.querySelector(':scope > .children');
-  const icon = li.querySelector(':scope > .person-row > .person-row__content > .toggle-icon');
+  const toggleBtn = li.querySelector(':scope > .person-row > .person-row__content > .toggle-btn');
+  const icon = toggleBtn ? toggleBtn.querySelector('.toggle-icon') : null;
   if (!children) return;
+
+  const personName = getPersonNameFromLi(li);
+
   children.classList.toggle('collapsed', !expand);
   if (icon) icon.textContent = expand ? '▾' : '▸';
+
+  if (toggleBtn) {
+    toggleBtn.setAttribute('aria-expanded', expand ? 'true' : 'false');
+    toggleBtn.setAttribute('aria-label', `${expand ? 'Collapse' : 'Expand'} descendants of ${personName}`);
+  }
+
+  if (announceChange) {
+    announce(`${expand ? 'Expanded' : 'Collapsed'} descendants of ${personName}.`);
+  }
 }
 
 function createAvatarContent(container, name, photoSrc) {
@@ -84,22 +113,82 @@ function renderDetailsSpouses(container, spouses) {
 
 function setupDetailsOverlay() {
   const overlay = document.getElementById('details-overlay');
+  const dialog = document.getElementById('details-dialog');
   const closeBtn = document.getElementById('details-close');
   const detailsName = document.getElementById('details-name');
   const detailsAvatar = document.getElementById('details-avatar');
   const detailsSpouses = document.getElementById('details-spouses');
 
-  if (!overlay || !closeBtn || !detailsName || !detailsAvatar || !detailsSpouses) return;
+  if (!overlay || !dialog || !closeBtn || !detailsName || !detailsAvatar || !detailsSpouses) return;
 
-  function openDetails(name, photoSrc, spouses) {
+  let lastFocusedElement = null;
+
+  function getFocusableElementsInDialog() {
+    return Array.from(dialog.querySelectorAll(FOCUSABLE_SELECTOR)).filter(el => {
+      if (el.hasAttribute('disabled')) return false;
+      if (el.closest('[hidden]')) return false;
+      return true;
+    });
+  }
+
+  function trapFocus(event) {
+    if (event.key !== 'Tab' || overlay.hidden) return;
+
+    const focusables = getFocusableElementsInDialog();
+    if (!focusables.length) {
+      event.preventDefault();
+      dialog.focus();
+      return;
+    }
+
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+      return;
+    }
+
+    if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
+  function openDetails(name, photoSrc, spouses, triggerEl) {
+    lastFocusedElement = triggerEl instanceof HTMLElement ? triggerEl : document.activeElement;
+
     detailsName.textContent = name;
     createAvatarContent(detailsAvatar, name, photoSrc);
     renderDetailsSpouses(detailsSpouses, spouses);
+
     overlay.hidden = false;
+    dialog.addEventListener('keydown', trapFocus);
+
+    window.requestAnimationFrame(() => {
+      const focusables = getFocusableElementsInDialog();
+      if (focusables.length) {
+        focusables[0].focus();
+      } else {
+        dialog.focus();
+      }
+    });
+
+    announce(`Opened details dialog for ${name}.`);
   }
 
   function closeDetails() {
+    if (overlay.hidden) return;
+
     overlay.hidden = true;
+    dialog.removeEventListener('keydown', trapFocus);
+
+    if (lastFocusedElement && document.contains(lastFocusedElement)) {
+      lastFocusedElement.focus();
+    }
+
+    announce('Closed details dialog.');
   }
 
   document.querySelectorAll('.person > .person-row .details-btn').forEach(btn => {
@@ -109,7 +198,7 @@ function setupDetailsOverlay() {
       const personName = row.querySelector('.person-name')?.textContent.trim() || 'Unknown person';
       const personPhoto = getPersonPhotoSource(row);
       const spouses = getSpousesFromRow(row);
-      openDetails(personName, personPhoto, spouses);
+      openDetails(personName, personPhoto, spouses, btn);
     });
   });
 
@@ -128,7 +217,7 @@ function setupDetailsOverlay() {
         name: primaryName,
         external: false,
         deceased: false
-      }]);
+      }], btn);
 
       if (spouseExternal || spouseDeceased) {
         const extra = detailsSpouses.querySelector('.details-spouse-row');
@@ -152,16 +241,28 @@ function setupDetailsOverlay() {
 }
 
 function setupNodeToggles() {
+  document.querySelectorAll('.toggle-btn').forEach(toggleBtn => {
+    toggleBtn.addEventListener('click', event => {
+      event.stopPropagation();
+      const li = toggleBtn.closest('.person.has-children');
+      const children = li?.querySelector(':scope > .children');
+      if (!li || !children) return;
+
+      const isCollapsed = children.classList.contains('collapsed');
+      setExpanded(li, isCollapsed, true);
+    });
+  });
+
   document.querySelectorAll('.has-children > .person-row').forEach(row => {
     row.addEventListener('click', function(event) {
       if (event.target.closest('a') || event.target.closest('button')) return;
 
       const li = this.closest('.person.has-children');
-      const children = li.querySelector(':scope > .children');
-      if (!children) return;
+      const children = li?.querySelector(':scope > .children');
+      if (!li || !children) return;
 
       const isCollapsed = children.classList.contains('collapsed');
-      setExpanded(li, isCollapsed);
+      setExpanded(li, isCollapsed, true);
     });
   });
 
@@ -171,6 +272,7 @@ function setupNodeToggles() {
   if (expandAll) {
     expandAll.addEventListener('click', () => {
       document.querySelectorAll('.person.has-children').forEach(li => setExpanded(li, true));
+      announce('Expanded all branches.');
     });
   }
 
@@ -179,6 +281,7 @@ function setupNodeToggles() {
       document.querySelectorAll('.person.has-children').forEach(li => setExpanded(li, false));
       const rootNode = document.querySelector('.family-tree > .person.has-children');
       if (rootNode) setExpanded(rootNode, true);
+      announce('Collapsed all branches except the root.');
     });
   }
 }
