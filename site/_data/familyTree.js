@@ -2,10 +2,12 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const MarkdownItModule = require('markdown-it');
 const MarkdownIt = MarkdownItModule.default || MarkdownItModule;
 
 const IMAGE_EXT_FALLBACK_ORDER = ['.png', '.jpg', '.jpeg', '.webp', '.avif'];
+const OUTPUT_AVATARS_DIR = path.join('output', 'avatars');
 const markdown = new MarkdownIt({
   html: false,
   linkify: true,
@@ -95,7 +97,49 @@ function extractFrontmatter(markdown) {
   return { data, body };
 }
 
-function resolvePhoto(personAbsPath, personMeta, workspaceRootAbs, sourceDirRel) {
+function ensurePersonId(personAbsPath, rawMarkdown, parsedData) {
+  const existing = cleanScalar(parsedData.id || '');
+  if (existing) return existing;
+
+  const generated = crypto.randomUUID();
+
+  if (!rawMarkdown.startsWith('---\n')) {
+    const updatedNoFm = `---\nid: ${generated}\n---\n\n${rawMarkdown}`;
+    fs.writeFileSync(personAbsPath, updatedNoFm, 'utf8');
+    return generated;
+  }
+
+  const closing = '\n---\n';
+  const closingIndex = rawMarkdown.indexOf(closing, 4);
+  if (closingIndex === -1) {
+    const updatedMalformed = `---\nid: ${generated}\n---\n\n${rawMarkdown}`;
+    fs.writeFileSync(personAbsPath, updatedMalformed, 'utf8');
+    return generated;
+  }
+
+  const frontmatterText = rawMarkdown.slice(4, closingIndex);
+  const body = rawMarkdown.slice(closingIndex + closing.length);
+  const lines = frontmatterText.split('\n');
+  const fullNameIndex = lines.findIndex(line => /^\s*full_name:\s*/.test(line));
+  const insertAt = fullNameIndex >= 0 ? fullNameIndex + 1 : 0;
+  lines.splice(insertAt, 0, `id: ${generated}`);
+
+  const updated = `---\n${lines.join('\n')}\n---\n${body}`;
+  fs.writeFileSync(personAbsPath, updated, 'utf8');
+  return generated;
+}
+
+function copyAvatarToOutput(localAbsPath, personId, workspaceRootAbs) {
+  const ext = path.extname(localAbsPath).toLowerCase();
+  const avatarsDirAbs = path.join(workspaceRootAbs, OUTPUT_AVATARS_DIR);
+  fs.mkdirSync(avatarsDirAbs, { recursive: true });
+
+  const targetAbsPath = path.join(avatarsDirAbs, `${personId}${ext}`);
+  fs.copyFileSync(localAbsPath, targetAbsPath);
+  return `/avatars/${personId}${ext}`;
+}
+
+function resolvePhoto(personAbsPath, personMeta, personId, workspaceRootAbs, sourceDirRel) {
   const personDir = path.dirname(personAbsPath);
   const baseName = path.basename(personAbsPath, '.md');
 
@@ -108,7 +152,7 @@ function resolvePhoto(personAbsPath, personMeta, workspaceRootAbs, sourceDirRel)
     const explicitLocal = path.resolve(personDir, explicitPhoto);
     if (fs.existsSync(explicitLocal)) {
       return {
-        url: `/${toPosix(path.relative(workspaceRootAbs, explicitLocal))}`,
+        url: copyAvatarToOutput(explicitLocal, personId, workspaceRootAbs),
         remote: false,
         source: 'frontmatter'
       };
@@ -119,7 +163,7 @@ function resolvePhoto(personAbsPath, personMeta, workspaceRootAbs, sourceDirRel)
     const candidate = path.join(personDir, `${baseName}${ext}`);
     if (fs.existsSync(candidate)) {
       return {
-        url: `/${toPosix(path.relative(workspaceRootAbs, candidate))}`,
+        url: copyAvatarToOutput(candidate, personId, workspaceRootAbs),
         remote: false,
         source: 'sibling-fallback'
       };
@@ -142,7 +186,13 @@ function initials(name) {
 function parsePersonFile(personAbsPath, workspaceRootAbs, sourceDirRel) {
   const rawMarkdown = fs.readFileSync(personAbsPath, 'utf8');
   const parsed = extractFrontmatter(rawMarkdown);
-  const fullName = cleanScalar(parsed.data.full_name) || path.basename(personAbsPath, '.md');
+  const fullName = cleanScalar(parsed.data.full_name);
+
+  if (!fullName) {
+    return null;
+  }
+
+  const id = ensurePersonId(personAbsPath, rawMarkdown, parsed.data);
   const externalUrls = Array.isArray(parsed.data.external_url)
     ? parsed.data.external_url.map(cleanScalar).filter(Boolean)
     : [];
@@ -152,6 +202,7 @@ function parsePersonFile(personAbsPath, workspaceRootAbs, sourceDirRel) {
   return {
     absPath: personAbsPath,
     relPath: toPosix(path.relative(workspaceRootAbs, personAbsPath)),
+    id,
     fullName,
     born: cleanScalar(parsed.data.born),
     died: cleanScalar(parsed.data.died),
@@ -160,7 +211,7 @@ function parsePersonFile(personAbsPath, workspaceRootAbs, sourceDirRel) {
     externalUrls,
     notes: notesRaw,
     notesHtml: notesRaw ? markdown.render(notesRaw) : '',
-    photo: resolvePhoto(personAbsPath, parsed.data, workspaceRootAbs, sourceDirRel),
+    photo: resolvePhoto(personAbsPath, parsed.data, id, workspaceRootAbs, sourceDirRel),
     initials: initials(fullName)
   };
 }
@@ -214,6 +265,7 @@ function buildTree({ sourceDirRel, sourceDirAbs, workspaceRootAbs, rootPersonNam
     }
 
     const person = parsePersonFile(file, workspaceRootAbs, sourceDirRel);
+    if (!person) continue;
     personByAbsPath.set(person.absPath, person);
   }
 
@@ -320,6 +372,7 @@ function getChildrenForMarriage(marriage) {
 
       if (spouse) {
         spouses.push({
+          id: spouse.id,
           fullName: spouse.fullName,
           born: spouse.born,
           died: spouse.died,

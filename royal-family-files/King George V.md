@@ -1,5 +1,6 @@
 ---
 full_name: King George V
+id: 6dd57197-15cb-4bc1-94a5-d136d0be4890
 born: 1865-06-03
 died: 1936-01-20
 birth_place: Marlborough House, London

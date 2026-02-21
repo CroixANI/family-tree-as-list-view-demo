@@ -1,16 +1,9 @@
 'use strict';
 
 module.exports = function(eleventyConfig) {
-  const familyDataDir = process.env.FAMILY_DATA_DIR || 'royal-family-files';
-
   eleventyConfig.addPassthroughCopy({
     'site/style.css': 'style.css',
     'site/script.js': 'script.js'
-  });
-
-  // Copy only local image assets from the source family folder.
-  ['png', 'jpg', 'jpeg', 'webp', 'avif'].forEach(ext => {
-    eleventyConfig.addPassthroughCopy(`${familyDataDir}/**/*.${ext}`);
   });
 
   return {

@@ -13,7 +13,7 @@
 {% macro renderPerson(person, depth) %}
 {% set hasChildren = person.children.length > 0 %}
 {% set isExpandedByDefault = depth < 2 %}
-{% set childrenId = ('children-' ~ person.relPath) | replace('/', '-') | replace(' ', '-') | replace('&', 'and') | replace(',', '') | replace('.', '') | replace('(', '') | replace(')', '') %}
+{% set childrenId = 'children-' ~ person.id %}
 <li class="person{% if person.children.length %} has-children{% else %} leaf{% endif %}" data-depth="{{ depth }}">
   <div class="person-row" data-born="{{ person.born }}" data-died="{{ person.died }}">
     <div class="person-row__content">

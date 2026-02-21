@@ -72,6 +72,15 @@ or
 photo: https://example.com/person.png
 ```
 
+## Stable Person IDs and Avatar Output
+
+- Each person markdown file is expected to have `full_name` in frontmatter.
+- During build, if `id` is missing in a person file, it is auto-generated and written back once.
+- Existing `id` values are preserved.
+- Local person photos are copied to:
+  - `output/avatars/<person-id>.<ext>`
+- Generated HTML uses `/avatars/<person-id>.<ext>` paths, avoiding long/special-character folder URLs.
+
 Generate demo photos automatically for the current royal dataset:
 
 ```bash
