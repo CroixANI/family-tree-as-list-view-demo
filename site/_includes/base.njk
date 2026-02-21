@@ -7,6 +7,12 @@
   <link rel="stylesheet" href="{{ '/style.css' | url }}">
 </head>
 <body>
+  <svg aria-hidden="true" width="0" height="0" style="position:absolute;left:-9999px;overflow:hidden">
+    <symbol id="icon-rings" viewBox="0 0 24 24">
+      <circle cx="9" cy="12" r="5.5" fill="none" stroke="currentColor" stroke-width="2"></circle>
+      <circle cx="15" cy="12" r="5.5" fill="none" stroke="currentColor" stroke-width="2"></circle>
+    </symbol>
+  </svg>
   {{ content | safe }}
   <script src="{{ '/script.js' | url }}"></script>
 </body>

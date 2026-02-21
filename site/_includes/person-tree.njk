@@ -26,6 +26,7 @@
       {% else %}
         <span class="toggle-icon leaf-icon">•</span>
       {% endif %}
+
       <span class="person-name">{{ person.fullName }}</span>
 
       {% for spouse in person.spouses %}
@@ -34,16 +35,22 @@
           data-photo-src="{% if spouse.photo and spouse.photo.url %}{% if spouse.photo.remote %}{{ spouse.photo.url }}{% else %}{{ spouse.photo.url | url }}{% endif %}{% endif %}"
           data-initials="{{ spouse.initials }}"
         >
-          ⚭ <span class="spouse-name">{{ spouse.fullName }}</span>
-          {% if spouse.external and spouse.externalUrl %}
-            <a href="{{ spouse.externalUrl }}" class="ext-link" title="Open spouse external link" target="_blank" rel="noopener noreferrer">↗</a>
-          {% endif %}
+          <span class="spouse-avatar">{{ photoImg(spouse.photo, spouse.initials, 'spouse-photo', spouse.fullName ~ ' portrait') }}</span>
           <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="View details for {{ spouse.fullName }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle>
             </svg>
           </button>
+          <span class="marriage-icon" aria-hidden="true">
+            <svg class="marriage-icon-svg" viewBox="0 0 24 24">
+              <use href="#icon-rings"></use>
+            </svg>
+          </span>
+          <span class="spouse-name">{{ spouse.fullName }}</span>
+          {% if spouse.external and spouse.externalUrl %}
+            <a href="{{ spouse.externalUrl }}" class="ext-link" title="Open spouse external link" target="_blank" rel="noopener noreferrer">↗</a>
+          {% endif %}
         </span>
       {% endfor %}
     </div>
