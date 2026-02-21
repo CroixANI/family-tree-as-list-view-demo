@@ -262,6 +262,10 @@ main {
   color: var(--royal-blue);
 }
 
+.primary-details-btn {
+  margin-right: 2px;
+}
+
 .details-btn:focus,
 .spouse-details-btn:focus {
   outline: 2px solid var(--gold);
