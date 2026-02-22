@@ -12,7 +12,12 @@ const DEFAULTS = Object.freeze({
   SITE_DATA_DIR: '_data',
   SITE_OUTPUT_DIR: 'output',
   AVATARS_SUBDIR: 'avatars',
-  ELEVENTY_PATH_PREFIX: '/'
+  ELEVENTY_PATH_PREFIX: '/',
+  AUTH_HOST: '127.0.0.1',
+  AUTH_PORT: '8082',
+  SESSION_TTL_HOURS: '8',
+  SUPPORT_CONTACT_EMAIL: 'family-admin@example.com',
+  TRUST_PROXY: '0'
 });
 
 let envLoaded = false;
@@ -33,6 +38,13 @@ function getEnv(name, fallback) {
   return trimmed || fallback;
 }
 
+function parseCsv(raw) {
+  return String(raw || '')
+    .split(',')
+    .map(item => item.trim())
+    .filter(Boolean);
+}
+
 function getProjectConfig(workspaceRootAbs = process.cwd()) {
   loadEnv(workspaceRootAbs);
 
@@ -48,9 +60,34 @@ function getProjectConfig(workspaceRootAbs = process.cwd()) {
   };
 }
 
+function toBoolean(value) {
+  const normalized = String(value || '')
+    .trim()
+    .toLowerCase();
+  return normalized === '1' || normalized === 'true' || normalized === 'yes' || normalized === 'on';
+}
+
+function getAuthConfig(workspaceRootAbs = process.cwd()) {
+  loadEnv(workspaceRootAbs);
+
+  return {
+    authHost: getEnv('AUTH_HOST', DEFAULTS.AUTH_HOST),
+    authPort: getEnv('AUTH_PORT', DEFAULTS.AUTH_PORT),
+    googleClientId: getEnv('GOOGLE_CLIENT_ID', ''),
+    sessionSecret: getEnv('SESSION_SECRET', ''),
+    sessionTtlHours: getEnv('SESSION_TTL_HOURS', DEFAULTS.SESSION_TTL_HOURS),
+    allowedEmails: parseCsv(getEnv('ALLOWED_EMAILS', '')).map(email => email.toLowerCase()),
+    supportContactEmail: getEnv('SUPPORT_CONTACT_EMAIL', DEFAULTS.SUPPORT_CONTACT_EMAIL),
+    trustProxy: toBoolean(getEnv('TRUST_PROXY', DEFAULTS.TRUST_PROXY))
+  };
+}
+
 module.exports = {
   DEFAULTS,
   loadEnv,
   getEnv,
-  getProjectConfig
+  parseCsv,
+  toBoolean,
+  getProjectConfig,
+  getAuthConfig
 };

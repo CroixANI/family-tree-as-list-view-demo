@@ -1,0 +1,31 @@
+services:
+  family-tree:
+    environment:
+      NODE_ENV: production
+      TRUST_PROXY: 1
+    ports: []
+    expose:
+      - "8082"
+
+  caddy:
+    image: caddy:2.8-alpine
+    container_name: family-tree-caddy
+    restart: unless-stopped
+    depends_on:
+      family-tree:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:?Set APP_DOMAIN in .env}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

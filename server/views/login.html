@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Family Tree Login</title>
+    <link rel="stylesheet" href="/auth-assets/auth.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+  </head>
+  <body class="auth-page">
+    <main class="card">
+      <h1>Sign in to view family tree</h1>
+      <p>Only approved family-member emails can access this site.</p>
+
+      <div id="g_id_onload"
+        data-client_id="{{GOOGLE_CLIENT_ID}}"
+        data-context="signin"
+        data-ux_mode="popup"
+        data-callback="handleGoogleCredential"
+        data-auto_prompt="false">
+      </div>
+
+      <div class="g_id_signin"
+        data-type="standard"
+        data-shape="pill"
+        data-size="large"
+        data-theme="outline"
+        data-text="signin_with"
+        data-logo_alignment="left">
+      </div>
+
+      <div id="status" role="status" aria-live="polite"></div>
+      <p class="hint">If you are denied access, contact your family tree administrator.</p>
+    </main>
+
+    <script>
+      window.__NEXT_PATH__ = {{NEXT_PATH_JSON}};
+    </script>
+    <script src="/auth-assets/login.js" defer></script>
+  </body>
+</html>
