@@ -6,7 +6,8 @@
   "scripts": {
     "build": "node scripts/clean-output.js && eleventy",
     "start": "eleventy --serve",
-    "photos:demo": "node scripts/generate-demo-photos.js"
+    "photos:demo": "node scripts/generate-demo-photos.js",
+    "photos:public": "node scripts/download-public-photos.js"
   },
   "dependencies": {
     "@11ty/eleventy": "^3.1.2",

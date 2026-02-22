@@ -1,6 +1,6 @@
 # Royal Family Files
 
-This folder stores source data for a future static-site generator.
+This folder stores source data for the static-site generator.
 
 ## Data model
 
@@ -15,8 +15,8 @@ Default behavior (recommended for easy GitHub UI editing):
 1. Do **not** add a `photo:` field.
 2. Put the image file next to the person's Markdown file with the same base name.
    Example:
-   - `King George V.md`
-   - `King George V.png`
+   - `King George VI.md`
+   - `King George VI.png`
 
 Image extensions to try in order:
 
@@ -29,8 +29,12 @@ Image extensions to try in order:
 Optional override:
 
 - If `photo:` is present in frontmatter, the generator should use it directly.
-- `photo:` may be a relative local path (for example `./King George V.png`) or an absolute URL.
+- `photo:` may be a relative local path (for example `./King George VI.png`) or an absolute URL.
 
 ## External spouse links
 
 - Use `external_url` in a person file when the spouse should link to another documented family.
+
+## Historical sources
+
+- See `SOURCES.md` for the public references used by this Windsor dataset.
