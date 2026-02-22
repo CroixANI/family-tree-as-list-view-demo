@@ -64,6 +64,22 @@ function createAvatarContent(container, name, photoSrc) {
   container.textContent = initials(name);
 }
 
+function setupInlineAvatarFallbacks() {
+  document.querySelectorAll('.person-avatar img.person-photo, .spouse-avatar img.spouse-photo').forEach(img => {
+    img.addEventListener('error', () => {
+      const avatar = img.parentElement;
+      if (!avatar) return;
+
+      const spouseBadge = img.closest('.spouse-badge');
+      const name = spouseBadge
+        ? (spouseBadge.querySelector('.spouse-name')?.textContent.trim() || '')
+        : (img.closest('.person-row')?.querySelector('.person-name')?.textContent.trim() || '');
+
+      avatar.textContent = initials(name);
+    }, { once: true });
+  });
+}
+
 function getPersonPhotoSource(personRow) {
   const img = personRow.querySelector(':scope .person-avatar img');
   return img ? img.getAttribute('src') : '';
@@ -380,6 +396,7 @@ function applyPersonSelectionFromUrl() {
   announce(`Focused ${name ? name.textContent.trim() : 'selected person'} from URL.`);
 }
 
+setupInlineAvatarFallbacks();
 setupNodeToggles();
 setupDetailsOverlay();
 applyPersonSelectionFromUrl();

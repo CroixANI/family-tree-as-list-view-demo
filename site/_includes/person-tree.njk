@@ -14,8 +14,9 @@
 {% set hasChildren = person.children.length > 0 %}
 {% set isExpandedByDefault = depth < 2 %}
 {% set childrenId = 'children-' ~ person.id %}
-<li class="person{% if person.children.length %} has-children{% else %} leaf{% endif %}" data-depth="{{ depth }}" data-person-id="{{ person.id }}">
-  <div class="person-row" data-born="{{ person.born }}" data-died="{{ person.died }}">
+{% set isDeceased = person.died %}
+<li class="person{% if person.children.length %} has-children{% else %} leaf{% endif %}{% if isDeceased %} deceased-person{% endif %}" data-depth="{{ depth }}" data-person-id="{{ person.id }}">
+  <div class="person-row{% if isDeceased %} deceased{% endif %}" data-born="{{ person.born }}" data-died="{{ person.died }}">
     <div class="person-row__content">
       <div class="person-avatar">{{ photoImg(person.photo, person.initials, 'person-photo', person.fullName ~ ' portrait') }}</div>
       <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for {{ person.fullName }}" aria-haspopup="dialog">
@@ -40,6 +41,9 @@
       {% endif %}
 
       <span class="person-name">{{ person.fullName }}</span>
+      {% if isDeceased %}
+        <span class="deceased-badge" aria-label="{{ person.fullName }} is deceased" title="Deceased ({{ person.died }})">† {{ person.died }}</span>
+      {% endif %}
 
       <template class="bio-template">{{ person.notesHtml | safe }}</template>
 
@@ -65,6 +69,9 @@
             </svg>
           </span>
           <span class="spouse-name">{{ spouse.fullName }}</span>
+          {% if spouse.deceased %}
+            <span class="deceased-badge spouse-deceased-badge" aria-label="{{ spouse.fullName }} is deceased" title="Deceased{% if spouse.died %} ({{ spouse.died }}){% endif %}">† {% if spouse.died %}{{ spouse.died }}{% else %}Deceased{% endif %}</span>
+          {% endif %}
           {% if spouse.external and spouse.externalUrl %}
             <a href="{{ spouse.externalUrl }}" class="ext-link" title="Open spouse external link" aria-label="Open external family link for {{ spouse.fullName }} (opens in new tab)" target="_blank" rel="noopener noreferrer">↗</a>
           {% endif %}

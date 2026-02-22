@@ -6,4 +6,4 @@ died: 2002-03-30
 birth_place: Hitchin, Hertfordshire
 ---
 
-Queen Elizabeth, The Queen Mother is recorded as spouse of King George V in this demo dataset.
+Queen Elizabeth, later known as the Queen Mother, was the wife of King George VI and the mother of Queen Elizabeth II. She remained a prominent public figure in the United Kingdom for decades after George VI's death.

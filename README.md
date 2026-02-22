@@ -111,6 +111,8 @@ or
 photo: https://example.com/person.png
 ```
 
+If no photo is resolved for a person, the UI shows initials in the avatar circle.
+
 ## Stable Person IDs and Avatar Output
 
 - Each person markdown file is expected to have `full_name` in frontmatter.
@@ -124,6 +126,12 @@ Generate demo photos automatically for the current royal dataset:
 
 ```bash
 npm run photos:demo
+```
+
+Download public photos (Wikipedia/Wikimedia) into sibling files and remove `photo:` URLs from frontmatter:
+
+```bash
+npm run photos:public
 ```
 
 ## GitHub Pages

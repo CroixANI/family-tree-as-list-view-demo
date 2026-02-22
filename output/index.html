@@ -25,6 +25,9 @@
     <button id="expand-all" type="button" aria-label="Expand all family branches">Expand All</button>
     <button id="collapse-all" type="button" aria-label="Collapse all family branches except the root">Collapse All</button>
   </div>
+  <p class="tree-legend" aria-label="Tree legend">
+    <span class="legend-chip deceased">† Deceased</span>
+  </p>
 </header>
 
 <main>
@@ -36,17 +39,18 @@
 
 
 
-<li class="person has-children" data-depth="0" data-person-id="6dd57197-15cb-4bc1-94a5-d136d0be4890">
-  <div class="person-row" data-born="1865-06-03" data-died="1936-01-20">
+
+<li class="person has-children deceased-person" data-depth="0" data-person-id="6dd57197-15cb-4bc1-94a5-d136d0be4890">
+  <div class="person-row deceased" data-born="1895-12-14" data-died="1952-02-06">
     <div class="person-row__content">
       <div class="person-avatar">
   
     
-      <img class="person-photo" src="/avatars/6dd57197-15cb-4bc1-94a5-d136d0be4890.jpg" alt="King George V portrait" loading="lazy">
+      <img class="person-photo" src="/avatars/6dd57197-15cb-4bc1-94a5-d136d0be4890.jpg" alt="King George VI portrait" loading="lazy">
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for King George V" aria-haspopup="dialog">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for King George VI" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
@@ -58,37 +62,18 @@
           type="button"
           aria-controls="children-6dd57197-15cb-4bc1-94a5-d136d0be4890"
           aria-expanded="true"
-          aria-label="Collapse descendants of King George V"
+          aria-label="Collapse descendants of King George VI"
         >
           <span class="toggle-icon" aria-hidden="true">▾</span>
         </button>
       
 
-      <span class="person-name">King George V</span>
+      <span class="person-name">King George VI</span>
+      
+        <span class="deceased-badge" aria-label="King George VI is deceased" title="Deceased (1952-02-06)">† 1952-02-06</span>
+      
 
-      <template class="bio-template"><h2>Overview</h2>
-<p>King George V is the root person of this example tree.
-This profile is intentionally richer than the others so we can test Markdown rendering in the future dialog experience.</p>
-<h3>Why this record exists</h3>
-<ul>
-<li>Demonstrate a longer biography section.</li>
-<li>Verify headings and list rendering.</li>
-<li>Verify remote image rendering inside markdown content.</li>
-</ul>
-<h3>Sample timeline</h3>
-<ol>
-<li>Born in London (<code>1865-06-03</code>).</li>
-<li>Added as the root person in this demo data structure.</li>
-<li>Used as the primary test case for markdown-to-HTML rendering.</li>
-</ol>
-<h3>Family context in this demo</h3>
-<p>He appears in the tree with spouse <strong>Queen Elizabeth, The Queen Mother</strong> and descendants continuing through <strong>Queen Elizabeth II</strong>.</p>
-<h3>Gallery (Markdown Images)</h3>
-<p><img src="https://source.unsplash.com/1200x800/?vintage,portrait" alt="Vintage portrait style placeholder"></p>
-<p><img src="https://source.unsplash.com/1200x800/?london,palace" alt="London palace placeholder"></p>
-<blockquote>
-<p>Note: The two images above are remote placeholders intended only for markdown rendering tests.</p>
-</blockquote>
+      <template class="bio-template"><p>King George VI led the United Kingdom through the Second World War and served as monarch from 1936 until 1952. He was the father of Queen Elizabeth II and Princess Margaret.</p>
 </template>
 
       
@@ -99,7 +84,7 @@ This profile is intentionally richer than the others so we can test Markdown ren
           data-born="1900-08-04"
           data-died="2002-03-30"
         >
-          <template class="bio-template"><p>Queen Elizabeth, The Queen Mother is recorded as spouse of King George V in this demo dataset.</p>
+          <template class="bio-template"><p>Queen Elizabeth, later known as the Queen Mother, was the wife of King George VI and the mother of Queen Elizabeth II. She remained a prominent public figure in the United Kingdom for decades after George VI’s death.</p>
 </template>
           <span class="spouse-avatar">
   
@@ -121,6 +106,9 @@ This profile is intentionally richer than the others so we can test Markdown ren
           </span>
           <span class="spouse-name">Queen Elizabeth, The Queen Mother</span>
           
+            <span class="deceased-badge spouse-deceased-badge" aria-label="Queen Elizabeth, The Queen Mother is deceased" title="Deceased (2002-03-30)">† 2002-03-30</span>
+          
+          
         </span>
       
     </div>
@@ -133,8 +121,9 @@ This profile is intentionally richer than the others so we can test Markdown ren
 
 
 
-<li class="person has-children" data-depth="1" data-person-id="5b465321-9507-4aac-ae19-9398bab2d899">
-  <div class="person-row" data-born="1926-04-21" data-died="2022-09-08">
+
+<li class="person has-children deceased-person" data-depth="1" data-person-id="5b465321-9507-4aac-ae19-9398bab2d899">
+  <div class="person-row deceased" data-born="1926-04-21" data-died="2022-09-08">
     <div class="person-row__content">
       <div class="person-avatar">
   
@@ -162,8 +151,11 @@ This profile is intentionally richer than the others so we can test Markdown ren
       
 
       <span class="person-name">Queen Elizabeth II</span>
+      
+        <span class="deceased-badge" aria-label="Queen Elizabeth II is deceased" title="Deceased (2022-09-08)">† 2022-09-08</span>
+      
 
-      <template class="bio-template"><p>Queen Elizabeth II is recorded as a blood descendant of King George V in this example tree.</p>
+      <template class="bio-template"><p>Queen Elizabeth II was the longest-reigning British monarch, serving from 1952 to 2022. She was the elder daughter of King George VI and Queen Elizabeth, The Queen Mother.</p>
 </template>
 
       
@@ -174,7 +166,7 @@ This profile is intentionally richer than the others so we can test Markdown ren
           data-born="1921-06-10"
           data-died="2021-04-09"
         >
-          <template class="bio-template"><p>Prince Philip appears as spouse of Queen Elizabeth II in this sample tree.</p>
+          <template class="bio-template"><p>Prince Philip was the husband of Queen Elizabeth II and the father of King Charles III, Princess Anne, Prince Andrew, and Prince Edward.</p>
 </template>
           <span class="spouse-avatar">
   
@@ -196,6 +188,9 @@ This profile is intentionally richer than the others so we can test Markdown ren
           </span>
           <span class="spouse-name">Prince Philip, Duke of Edinburgh</span>
           
+            <span class="deceased-badge spouse-deceased-badge" aria-label="Prince Philip, Duke of Edinburgh is deceased" title="Deceased (2021-04-09)">† 2021-04-09</span>
+          
+          
         </span>
       
     </div>
@@ -208,17 +203,18 @@ This profile is intentionally richer than the others so we can test Markdown ren
 
 
 
+
 <li class="person has-children" data-depth="2" data-person-id="e498bb69-39b3-4826-b9da-a1b8998326de">
   <div class="person-row" data-born="1948-11-14" data-died="">
     <div class="person-row__content">
       <div class="person-avatar">
   
     
-      <img class="person-photo" src="/avatars/e498bb69-39b3-4826-b9da-a1b8998326de.jpg" alt="Charles, Prince of Wales portrait" loading="lazy">
+      <img class="person-photo" src="/avatars/e498bb69-39b3-4826-b9da-a1b8998326de.jpg" alt="King Charles III portrait" loading="lazy">
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Charles, Prince of Wales" aria-haspopup="dialog">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for King Charles III" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
@@ -230,15 +226,16 @@ This profile is intentionally richer than the others so we can test Markdown ren
           type="button"
           aria-controls="children-e498bb69-39b3-4826-b9da-a1b8998326de"
           aria-expanded="false"
-          aria-label="Expand descendants of Charles, Prince of Wales"
+          aria-label="Expand descendants of King Charles III"
         >
           <span class="toggle-icon" aria-hidden="true">▸</span>
         </button>
       
 
-      <span class="person-name">Charles, Prince of Wales</span>
+      <span class="person-name">King Charles III</span>
+      
 
-      <template class="bio-template"><p>Charles is represented with two marriages in this demo, while remaining a single primary person node.</p>
+      <template class="bio-template"><p>King Charles III is the eldest child of Queen Elizabeth II and Prince Philip. He became monarch on 8 September 2022.</p>
 </template>
 
       
@@ -249,7 +246,7 @@ This profile is intentionally richer than the others so we can test Markdown ren
           data-born="1961-07-01"
           data-died="1997-08-31"
         >
-          <template class="bio-template"><p>Diana is recorded as Charles’s first spouse in this sample dataset.</p>
+          <template class="bio-template"><p>Diana, Princess of Wales, was the first wife of King Charles III and the mother of William and Harry.</p>
 </template>
           <span class="spouse-avatar">
   
@@ -271,25 +268,28 @@ This profile is intentionally richer than the others so we can test Markdown ren
           </span>
           <span class="spouse-name">Diana, Princess of Wales</span>
           
+            <span class="deceased-badge spouse-deceased-badge" aria-label="Diana, Princess of Wales is deceased" title="Deceased (1997-08-31)">† 1997-08-31</span>
+          
+          
         </span>
       
         <span
           class="spouse-badge"
           data-photo-src="/avatars/6b032d57-e284-4a60-97ee-85081d263cda.jpg"
-          data-initials="CD"
+          data-initials="QC"
           data-born="1947-07-17"
           data-died=""
         >
-          <template class="bio-template"><p>Camilla is recorded as Charles’s second spouse.</p>
+          <template class="bio-template"><p>Queen Camilla is the wife of King Charles III. They married in 2005.</p>
 </template>
           <span class="spouse-avatar">
   
     
-      <img class="spouse-photo" src="/avatars/6b032d57-e284-4a60-97ee-85081d263cda.jpg" alt="Camilla, Duchess of Cornwall (2nd) portrait" loading="lazy">
+      <img class="spouse-photo" src="/avatars/6b032d57-e284-4a60-97ee-85081d263cda.jpg" alt="Queen Camilla portrait" loading="lazy">
     
   
 </span>
-          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="Open details dialog for Camilla, Duchess of Cornwall (2nd)" aria-haspopup="dialog">
+          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="Open details dialog for Queen Camilla" aria-haspopup="dialog">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle>
@@ -300,7 +300,8 @@ This profile is intentionally richer than the others so we can test Markdown ren
               <use href="#icon-rings"></use>
             </svg>
           </span>
-          <span class="spouse-name">Camilla, Duchess of Cornwall (2nd)</span>
+          <span class="spouse-name">Queen Camilla</span>
+          
           
         </span>
       
@@ -314,17 +315,18 @@ This profile is intentionally richer than the others so we can test Markdown ren
 
 
 
+
 <li class="person has-children" data-depth="3" data-person-id="9820bf3d-ab56-46d4-83ce-21216c6956aa">
   <div class="person-row" data-born="1982-06-21" data-died="">
     <div class="person-row__content">
       <div class="person-avatar">
   
     
-      <img class="person-photo" src="/avatars/9820bf3d-ab56-46d4-83ce-21216c6956aa.jpg" alt="Prince William, Duke of Cambridge portrait" loading="lazy">
+      <img class="person-photo" src="/avatars/9820bf3d-ab56-46d4-83ce-21216c6956aa.jpg" alt="William, Prince of Wales portrait" loading="lazy">
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Prince William, Duke of Cambridge" aria-haspopup="dialog">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for William, Prince of Wales" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
@@ -336,35 +338,36 @@ This profile is intentionally richer than the others so we can test Markdown ren
           type="button"
           aria-controls="children-9820bf3d-ab56-46d4-83ce-21216c6956aa"
           aria-expanded="false"
-          aria-label="Expand descendants of Prince William, Duke of Cambridge"
+          aria-label="Expand descendants of William, Prince of Wales"
         >
           <span class="toggle-icon" aria-hidden="true">▸</span>
         </button>
       
 
-      <span class="person-name">Prince William, Duke of Cambridge</span>
+      <span class="person-name">William, Prince of Wales</span>
+      
 
-      <template class="bio-template"><p>Prince William is a child of Charles and Diana in this sample.</p>
+      <template class="bio-template"><p>William, Prince of Wales, is the elder son of King Charles III and Diana, Princess of Wales.</p>
 </template>
 
       
         <span
           class="spouse-badge"
           data-photo-src="/avatars/9dab859c-7598-4321-bb62-244fd6bdd061.jpg"
-          data-initials="CD"
+          data-initials="CP"
           data-born="1982-01-09"
           data-died=""
         >
-          <template class="bio-template"><p>Catherine is recorded as spouse of Prince William in this sample.</p>
+          <template class="bio-template"><p>Catherine, Princess of Wales, is the wife of William, Prince of Wales.</p>
 </template>
           <span class="spouse-avatar">
   
     
-      <img class="spouse-photo" src="/avatars/9dab859c-7598-4321-bb62-244fd6bdd061.jpg" alt="Catherine, Duchess of Cambridge portrait" loading="lazy">
+      <img class="spouse-photo" src="/avatars/9dab859c-7598-4321-bb62-244fd6bdd061.jpg" alt="Catherine, Princess of Wales portrait" loading="lazy">
     
   
 </span>
-          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="Open details dialog for Catherine, Duchess of Cambridge" aria-haspopup="dialog">
+          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="Open details dialog for Catherine, Princess of Wales" aria-haspopup="dialog">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle>
@@ -375,7 +378,8 @@ This profile is intentionally richer than the others so we can test Markdown ren
               <use href="#icon-rings"></use>
             </svg>
           </span>
-          <span class="spouse-name">Catherine, Duchess of Cambridge</span>
+          <span class="spouse-name">Catherine, Princess of Wales</span>
+          
           
         </span>
       
@@ -389,17 +393,18 @@ This profile is intentionally richer than the others so we can test Markdown ren
 
 
 
+
 <li class="person leaf" data-depth="4" data-person-id="26fd7525-95f3-46fc-a447-5b199613aa0e">
   <div class="person-row" data-born="2013-07-22" data-died="">
     <div class="person-row__content">
       <div class="person-avatar">
   
     
-      <img class="person-photo" src="/avatars/26fd7525-95f3-46fc-a447-5b199613aa0e.jpg" alt="Prince George of Cambridge portrait" loading="lazy">
+      <img class="person-photo" src="/avatars/26fd7525-95f3-46fc-a447-5b199613aa0e.jpg" alt="Prince George of Wales portrait" loading="lazy">
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Prince George of Cambridge" aria-haspopup="dialog">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Prince George of Wales" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
@@ -407,12 +412,13 @@ This profile is intentionally richer than the others so we can test Markdown ren
       </button>
       
         <span class="toggle-icon leaf-icon" aria-hidden="true">•</span>
-        <span class="sr-only">No children recorded for Prince George of Cambridge</span>
+        <span class="sr-only">No children recorded for Prince George of Wales</span>
       
 
-      <span class="person-name">Prince George of Cambridge</span>
+      <span class="person-name">Prince George of Wales</span>
+      
 
-      <template class="bio-template"><p>Prince George is represented as a leaf descendant in this sample.</p>
+      <template class="bio-template"><p>Prince George of Wales is the eldest child of William and Catherine.</p>
 </template>
 
       
@@ -424,6 +430,7 @@ This profile is intentionally richer than the others so we can test Markdown ren
 
       
         
+
 
 
 
@@ -433,11 +440,11 @@ This profile is intentionally richer than the others so we can test Markdown ren
       <div class="person-avatar">
   
     
-      <img class="person-photo" src="/avatars/aab20191-c2d7-465c-b02c-f2192c17f908.jpg" alt="Princess Charlotte of Cambridge portrait" loading="lazy">
+      <img class="person-photo" src="/avatars/aab20191-c2d7-465c-b02c-f2192c17f908.jpg" alt="Princess Charlotte of Wales portrait" loading="lazy">
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Princess Charlotte of Cambridge" aria-haspopup="dialog">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Princess Charlotte of Wales" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
@@ -445,12 +452,13 @@ This profile is intentionally richer than the others so we can test Markdown ren
       </button>
       
         <span class="toggle-icon leaf-icon" aria-hidden="true">•</span>
-        <span class="sr-only">No children recorded for Princess Charlotte of Cambridge</span>
+        <span class="sr-only">No children recorded for Princess Charlotte of Wales</span>
       
 
-      <span class="person-name">Princess Charlotte of Cambridge</span>
+      <span class="person-name">Princess Charlotte of Wales</span>
+      
 
-      <template class="bio-template"><p>Princess Charlotte is represented as a leaf descendant in this sample.</p>
+      <template class="bio-template"><p>Princess Charlotte of Wales is the second child of William and Catherine.</p>
 </template>
 
       
@@ -465,17 +473,18 @@ This profile is intentionally richer than the others so we can test Markdown ren
 
 
 
+
 <li class="person leaf" data-depth="4" data-person-id="84f6b718-c50c-4a3f-a2ec-74e0d919a97d">
   <div class="person-row" data-born="2018-04-23" data-died="">
     <div class="person-row__content">
       <div class="person-avatar">
   
     
-      <img class="person-photo" src="/avatars/84f6b718-c50c-4a3f-a2ec-74e0d919a97d.jpg" alt="Prince Louis of Cambridge portrait" loading="lazy">
+      <img class="person-photo" src="/avatars/84f6b718-c50c-4a3f-a2ec-74e0d919a97d.jpg" alt="Prince Louis of Wales portrait" loading="lazy">
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Prince Louis of Cambridge" aria-haspopup="dialog">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Prince Louis of Wales" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
@@ -483,12 +492,13 @@ This profile is intentionally richer than the others so we can test Markdown ren
       </button>
       
         <span class="toggle-icon leaf-icon" aria-hidden="true">•</span>
-        <span class="sr-only">No children recorded for Prince Louis of Cambridge</span>
+        <span class="sr-only">No children recorded for Prince Louis of Wales</span>
       
 
-      <span class="person-name">Prince Louis of Cambridge</span>
+      <span class="person-name">Prince Louis of Wales</span>
+      
 
-      <template class="bio-template"><p>Prince Louis is represented as a leaf descendant in this sample.</p>
+      <template class="bio-template"><p>Prince Louis of Wales is the youngest child of William and Catherine.</p>
 </template>
 
       
@@ -508,7 +518,8 @@ This profile is intentionally richer than the others so we can test Markdown ren
 
 
 
-<li class="person leaf" data-depth="3" data-person-id="ebfe8ca9-3e8d-4d2e-a28d-ae0bf205200e">
+
+<li class="person has-children" data-depth="3" data-person-id="ebfe8ca9-3e8d-4d2e-a28d-ae0bf205200e">
   <div class="person-row" data-born="1984-09-15" data-died="">
     <div class="person-row__content">
       <div class="person-avatar">
@@ -525,33 +536,41 @@ This profile is intentionally richer than the others so we can test Markdown ren
         </svg>
       </button>
       
-        <span class="toggle-icon leaf-icon" aria-hidden="true">•</span>
-        <span class="sr-only">No children recorded for Prince Harry, Duke of Sussex</span>
+        <button
+          class="toggle-btn"
+          type="button"
+          aria-controls="children-ebfe8ca9-3e8d-4d2e-a28d-ae0bf205200e"
+          aria-expanded="false"
+          aria-label="Expand descendants of Prince Harry, Duke of Sussex"
+        >
+          <span class="toggle-icon" aria-hidden="true">▸</span>
+        </button>
       
 
       <span class="person-name">Prince Harry, Duke of Sussex</span>
+      
 
-      <template class="bio-template"><p>Prince Harry is a child of Charles and Diana in this sample.</p>
+      <template class="bio-template"><p>Prince Harry is the younger son of King Charles III and Diana, Princess of Wales.</p>
 </template>
 
       
         <span
           class="spouse-badge external"
           data-photo-src="/avatars/f3d41ed6-ebd0-4171-a745-28285660a591.jpg"
-          data-initials="MM"
+          data-initials="MD"
           data-born="1981-08-04"
           data-died=""
         >
-          <template class="bio-template"><p>Meghan Markle is recorded as spouse of Prince Harry and marked as external-family linkable data.</p>
+          <template class="bio-template"><p>Meghan, Duchess of Sussex, is the wife of Prince Harry, Duke of Sussex.</p>
 </template>
           <span class="spouse-avatar">
   
     
-      <img class="spouse-photo" src="/avatars/f3d41ed6-ebd0-4171-a745-28285660a591.jpg" alt="Meghan Markle portrait" loading="lazy">
+      <img class="spouse-photo" src="/avatars/f3d41ed6-ebd0-4171-a745-28285660a591.jpg" alt="Meghan, Duchess of Sussex portrait" loading="lazy">
     
   
 </span>
-          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="Open details dialog for Meghan Markle" aria-haspopup="dialog">
+          <button class="spouse-details-btn" type="button" title="View spouse details" aria-label="Open details dialog for Meghan, Duchess of Sussex" aria-haspopup="dialog">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle>
@@ -562,11 +581,87 @@ This profile is intentionally richer than the others so we can test Markdown ren
               <use href="#icon-rings"></use>
             </svg>
           </span>
-          <span class="spouse-name">Meghan Markle</span>
+          <span class="spouse-name">Meghan, Duchess of Sussex</span>
           
-            <a href="https://en.wikipedia.org/wiki/Meghan,_Duchess_of_Sussex" class="ext-link" title="Open spouse external link" aria-label="Open external family link for Meghan Markle (opens in new tab)" target="_blank" rel="noopener noreferrer">↗</a>
+          
+            <a href="https://en.wikipedia.org/wiki/Meghan,_Duchess_of_Sussex" class="ext-link" title="Open spouse external link" aria-label="Open external family link for Meghan, Duchess of Sussex (opens in new tab)" target="_blank" rel="noopener noreferrer">↗</a>
           
         </span>
+      
+    </div>
+  </div>
+
+  
+    <ul id="children-ebfe8ca9-3e8d-4d2e-a28d-ae0bf205200e" class="children collapsed">
+      
+        
+
+
+
+
+<li class="person leaf" data-depth="4" data-person-id="c8ea33ed-db3c-462b-97e8-9040a383e30e">
+  <div class="person-row" data-born="2019-05-06" data-died="">
+    <div class="person-row__content">
+      <div class="person-avatar">
+  
+    PA
+  
+</div>
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Prince Archie of Sussex" aria-haspopup="dialog">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      </button>
+      
+        <span class="toggle-icon leaf-icon" aria-hidden="true">•</span>
+        <span class="sr-only">No children recorded for Prince Archie of Sussex</span>
+      
+
+      <span class="person-name">Prince Archie of Sussex</span>
+      
+
+      <template class="bio-template"><p>Prince Archie of Sussex is the elder child of Prince Harry and Meghan, Duchess of Sussex.</p>
+</template>
+
+      
+    </div>
+  </div>
+
+  
+</li>
+
+      
+        
+
+
+
+
+<li class="person leaf" data-depth="4" data-person-id="5d1c82a2-9716-4f97-bef9-e042e48f3b14">
+  <div class="person-row" data-born="2021-06-04" data-died="">
+    <div class="person-row__content">
+      <div class="person-avatar">
+  
+    PL
+  
+</div>
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Princess Lilibet of Sussex" aria-haspopup="dialog">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      </button>
+      
+        <span class="toggle-icon leaf-icon" aria-hidden="true">•</span>
+        <span class="sr-only">No children recorded for Princess Lilibet of Sussex</span>
+      
+
+      <span class="person-name">Princess Lilibet of Sussex</span>
+      
+
+      <template class="bio-template"><p>Princess Lilibet of Sussex is the younger child of Prince Harry and Meghan, Duchess of Sussex.</p>
+</template>
+
       
     </div>
   </div>
@@ -580,7 +675,13 @@ This profile is intentionally richer than the others so we can test Markdown ren
 </li>
 
       
+    </ul>
+  
+</li>
+
+      
         
+
 
 
 
@@ -590,11 +691,11 @@ This profile is intentionally richer than the others so we can test Markdown ren
       <div class="person-avatar">
   
     
-      <img class="person-photo" src="/avatars/40e31b03-207e-46e4-ba76-99e84b5e710e.jpg" alt="Princess Anne, Princess Royal portrait" loading="lazy">
+      <img class="person-photo" src="/avatars/40e31b03-207e-46e4-ba76-99e84b5e710e.jpg" alt="Anne, Princess Royal portrait" loading="lazy">
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Princess Anne, Princess Royal" aria-haspopup="dialog">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Anne, Princess Royal" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
@@ -602,12 +703,13 @@ This profile is intentionally richer than the others so we can test Markdown ren
       </button>
       
         <span class="toggle-icon leaf-icon" aria-hidden="true">•</span>
-        <span class="sr-only">No children recorded for Princess Anne, Princess Royal</span>
+        <span class="sr-only">No children recorded for Anne, Princess Royal</span>
       
 
-      <span class="person-name">Princess Anne, Princess Royal</span>
+      <span class="person-name">Anne, Princess Royal</span>
+      
 
-      <template class="bio-template"><p>Princess Anne is included as a leaf node in this sample.</p>
+      <template class="bio-template"><p>Anne, Princess Royal is the second child and only daughter of Queen Elizabeth II and Prince Philip.</p>
 </template>
 
       
@@ -619,6 +721,7 @@ This profile is intentionally richer than the others so we can test Markdown ren
 
       
         
+
 
 
 
@@ -644,8 +747,9 @@ This profile is intentionally richer than the others so we can test Markdown ren
       
 
       <span class="person-name">Prince Andrew, Duke of York</span>
+      
 
-      <template class="bio-template"><p>Prince Andrew is included as a leaf node in this sample.</p>
+      <template class="bio-template"><p>Prince Andrew is the third child of Queen Elizabeth II and Prince Philip.</p>
 </template>
 
       
@@ -660,17 +764,18 @@ This profile is intentionally richer than the others so we can test Markdown ren
 
 
 
+
 <li class="person leaf" data-depth="2" data-person-id="14d9b400-9126-4b69-826f-c620602bcdac">
   <div class="person-row" data-born="1964-03-10" data-died="">
     <div class="person-row__content">
       <div class="person-avatar">
   
     
-      <img class="person-photo" src="/avatars/14d9b400-9126-4b69-826f-c620602bcdac.jpg" alt="Prince Edward, Earl of Wessex portrait" loading="lazy">
+      <img class="person-photo" src="/avatars/14d9b400-9126-4b69-826f-c620602bcdac.jpg" alt="Prince Edward, Duke of Edinburgh portrait" loading="lazy">
     
   
 </div>
-      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Prince Edward, Earl of Wessex" aria-haspopup="dialog">
+      <button class="details-btn primary-details-btn" type="button" title="View details" aria-label="Open details dialog for Prince Edward, Duke of Edinburgh" aria-haspopup="dialog">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
           <circle cx="12" cy="12" r="3"></circle>
@@ -678,12 +783,13 @@ This profile is intentionally richer than the others so we can test Markdown ren
       </button>
       
         <span class="toggle-icon leaf-icon" aria-hidden="true">•</span>
-        <span class="sr-only">No children recorded for Prince Edward, Earl of Wessex</span>
+        <span class="sr-only">No children recorded for Prince Edward, Duke of Edinburgh</span>
       
 
-      <span class="person-name">Prince Edward, Earl of Wessex</span>
+      <span class="person-name">Prince Edward, Duke of Edinburgh</span>
+      
 
-      <template class="bio-template"><p>Prince Edward is included as a leaf node in this sample.</p>
+      <template class="bio-template"><p>Prince Edward is the youngest child of Queen Elizabeth II and Prince Philip.</p>
 </template>
 
       
@@ -703,8 +809,9 @@ This profile is intentionally richer than the others so we can test Markdown ren
 
 
 
-<li class="person leaf" data-depth="1" data-person-id="e637ae4f-f818-4667-bcbf-3a819950ce38">
-  <div class="person-row" data-born="1930-08-21" data-died="2002-02-09">
+
+<li class="person leaf deceased-person" data-depth="1" data-person-id="e637ae4f-f818-4667-bcbf-3a819950ce38">
+  <div class="person-row deceased" data-born="1930-08-21" data-died="2002-02-09">
     <div class="person-row__content">
       <div class="person-avatar">
   
@@ -725,8 +832,11 @@ This profile is intentionally richer than the others so we can test Markdown ren
       
 
       <span class="person-name">Princess Margaret, Countess of Snowdon</span>
+      
+        <span class="deceased-badge" aria-label="Princess Margaret, Countess of Snowdon is deceased" title="Deceased (2002-02-09)">† 2002-02-09</span>
+      
 
-      <template class="bio-template"><p>Princess Margaret is included as a leaf node (no children recorded in this sample).</p>
+      <template class="bio-template"><p>Princess Margaret was the younger daughter of King George VI and Queen Elizabeth, and the only sibling of Queen Elizabeth II.</p>
 </template>
 
       
@@ -770,7 +880,7 @@ This profile is intentionally richer than the others so we can test Markdown ren
         <div class="details-meta-row">
           <span class="details-meta-icon">👥</span>
           <span class="details-meta-label">People</span>
-          <span class="details-meta-value">18</span>
+          <span class="details-meta-value">20</span>
         </div>
         <div class="details-meta-row details-meta-row--small">
           <span class="details-meta-icon">🖼️</span>
