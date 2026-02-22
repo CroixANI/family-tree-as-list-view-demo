@@ -25,6 +25,9 @@
     <button id="expand-all" type="button" aria-label="Expand all family branches">Expand All</button>
     <button id="collapse-all" type="button" aria-label="Collapse all family branches except the root">Collapse All</button>
   </div>
+  <p class="tree-legend" aria-label="Tree legend">
+    <span class="legend-chip deceased">† Deceased</span>
+  </p>
 </header>
 
 <main>
@@ -36,8 +39,9 @@
 
 
 
-<li class="person has-children" data-depth="0" data-person-id="6dd57197-15cb-4bc1-94a5-d136d0be4890">
-  <div class="person-row" data-born="1895-12-14" data-died="1952-02-06">
+
+<li class="person has-children deceased-person" data-depth="0" data-person-id="6dd57197-15cb-4bc1-94a5-d136d0be4890">
+  <div class="person-row deceased" data-born="1895-12-14" data-died="1952-02-06">
     <div class="person-row__content">
       <div class="person-avatar">
   
@@ -65,6 +69,9 @@
       
 
       <span class="person-name">King George VI</span>
+      
+        <span class="deceased-badge" aria-label="King George VI is deceased" title="Deceased (1952-02-06)">† 1952-02-06</span>
+      
 
       <template class="bio-template"><p>King George VI led the United Kingdom through the Second World War and served as monarch from 1936 until 1952. He was the father of Queen Elizabeth II and Princess Margaret.</p>
 </template>
@@ -99,6 +106,9 @@
           </span>
           <span class="spouse-name">Queen Elizabeth, The Queen Mother</span>
           
+            <span class="deceased-badge spouse-deceased-badge" aria-label="Queen Elizabeth, The Queen Mother is deceased" title="Deceased (2002-03-30)">† 2002-03-30</span>
+          
+          
         </span>
       
     </div>
@@ -111,8 +121,9 @@
 
 
 
-<li class="person has-children" data-depth="1" data-person-id="5b465321-9507-4aac-ae19-9398bab2d899">
-  <div class="person-row" data-born="1926-04-21" data-died="2022-09-08">
+
+<li class="person has-children deceased-person" data-depth="1" data-person-id="5b465321-9507-4aac-ae19-9398bab2d899">
+  <div class="person-row deceased" data-born="1926-04-21" data-died="2022-09-08">
     <div class="person-row__content">
       <div class="person-avatar">
   
@@ -140,6 +151,9 @@
       
 
       <span class="person-name">Queen Elizabeth II</span>
+      
+        <span class="deceased-badge" aria-label="Queen Elizabeth II is deceased" title="Deceased (2022-09-08)">† 2022-09-08</span>
+      
 
       <template class="bio-template"><p>Queen Elizabeth II was the longest-reigning British monarch, serving from 1952 to 2022. She was the elder daughter of King George VI and Queen Elizabeth, The Queen Mother.</p>
 </template>
@@ -174,6 +188,9 @@
           </span>
           <span class="spouse-name">Prince Philip, Duke of Edinburgh</span>
           
+            <span class="deceased-badge spouse-deceased-badge" aria-label="Prince Philip, Duke of Edinburgh is deceased" title="Deceased (2021-04-09)">† 2021-04-09</span>
+          
+          
         </span>
       
     </div>
@@ -183,6 +200,7 @@
     <ul id="children-5b465321-9507-4aac-ae19-9398bab2d899" class="children">
       
         
+
 
 
 
@@ -215,6 +233,7 @@
       
 
       <span class="person-name">King Charles III</span>
+      
 
       <template class="bio-template"><p>King Charles III is the eldest child of Queen Elizabeth II and Prince Philip. He became monarch on 8 September 2022.</p>
 </template>
@@ -249,6 +268,9 @@
           </span>
           <span class="spouse-name">Diana, Princess of Wales</span>
           
+            <span class="deceased-badge spouse-deceased-badge" aria-label="Diana, Princess of Wales is deceased" title="Deceased (1997-08-31)">† 1997-08-31</span>
+          
+          
         </span>
       
         <span
@@ -280,6 +302,7 @@
           </span>
           <span class="spouse-name">Queen Camilla</span>
           
+          
         </span>
       
     </div>
@@ -289,6 +312,7 @@
     <ul id="children-e498bb69-39b3-4826-b9da-a1b8998326de" class="children collapsed">
       
         
+
 
 
 
@@ -321,6 +345,7 @@
       
 
       <span class="person-name">William, Prince of Wales</span>
+      
 
       <template class="bio-template"><p>William, Prince of Wales, is the elder son of King Charles III and Diana, Princess of Wales.</p>
 </template>
@@ -355,6 +380,7 @@
           </span>
           <span class="spouse-name">Catherine, Princess of Wales</span>
           
+          
         </span>
       
     </div>
@@ -364,6 +390,7 @@
     <ul id="children-9820bf3d-ab56-46d4-83ce-21216c6956aa" class="children collapsed">
       
         
+
 
 
 
@@ -389,6 +416,7 @@
       
 
       <span class="person-name">Prince George of Wales</span>
+      
 
       <template class="bio-template"><p>Prince George of Wales is the eldest child of William and Catherine.</p>
 </template>
@@ -402,6 +430,7 @@
 
       
         
+
 
 
 
@@ -427,6 +456,7 @@
       
 
       <span class="person-name">Princess Charlotte of Wales</span>
+      
 
       <template class="bio-template"><p>Princess Charlotte of Wales is the second child of William and Catherine.</p>
 </template>
@@ -440,6 +470,7 @@
 
       
         
+
 
 
 
@@ -465,6 +496,7 @@
       
 
       <span class="person-name">Prince Louis of Wales</span>
+      
 
       <template class="bio-template"><p>Prince Louis of Wales is the youngest child of William and Catherine.</p>
 </template>
@@ -483,6 +515,7 @@
 
       
         
+
 
 
 
@@ -515,6 +548,7 @@
       
 
       <span class="person-name">Prince Harry, Duke of Sussex</span>
+      
 
       <template class="bio-template"><p>Prince Harry is the younger son of King Charles III and Diana, Princess of Wales.</p>
 </template>
@@ -549,6 +583,7 @@
           </span>
           <span class="spouse-name">Meghan, Duchess of Sussex</span>
           
+          
             <a href="https://en.wikipedia.org/wiki/Meghan,_Duchess_of_Sussex" class="ext-link" title="Open spouse external link" aria-label="Open external family link for Meghan, Duchess of Sussex (opens in new tab)" target="_blank" rel="noopener noreferrer">↗</a>
           
         </span>
@@ -560,6 +595,7 @@
     <ul id="children-ebfe8ca9-3e8d-4d2e-a28d-ae0bf205200e" class="children collapsed">
       
         
+
 
 
 
@@ -583,6 +619,7 @@
       
 
       <span class="person-name">Prince Archie of Sussex</span>
+      
 
       <template class="bio-template"><p>Prince Archie of Sussex is the elder child of Prince Harry and Meghan, Duchess of Sussex.</p>
 </template>
@@ -596,6 +633,7 @@
 
       
         
+
 
 
 
@@ -619,6 +657,7 @@
       
 
       <span class="person-name">Princess Lilibet of Sussex</span>
+      
 
       <template class="bio-template"><p>Princess Lilibet of Sussex is the younger child of Prince Harry and Meghan, Duchess of Sussex.</p>
 </template>
@@ -645,6 +684,7 @@
 
 
 
+
 <li class="person leaf" data-depth="2" data-person-id="40e31b03-207e-46e4-ba76-99e84b5e710e">
   <div class="person-row" data-born="1950-08-15" data-died="">
     <div class="person-row__content">
@@ -667,6 +707,7 @@
       
 
       <span class="person-name">Anne, Princess Royal</span>
+      
 
       <template class="bio-template"><p>Anne, Princess Royal is the second child and only daughter of Queen Elizabeth II and Prince Philip.</p>
 </template>
@@ -680,6 +721,7 @@
 
       
         
+
 
 
 
@@ -705,6 +747,7 @@
       
 
       <span class="person-name">Prince Andrew, Duke of York</span>
+      
 
       <template class="bio-template"><p>Prince Andrew is the third child of Queen Elizabeth II and Prince Philip.</p>
 </template>
@@ -718,6 +761,7 @@
 
       
         
+
 
 
 
@@ -743,6 +787,7 @@
       
 
       <span class="person-name">Prince Edward, Duke of Edinburgh</span>
+      
 
       <template class="bio-template"><p>Prince Edward is the youngest child of Queen Elizabeth II and Prince Philip.</p>
 </template>
@@ -764,8 +809,9 @@
 
 
 
-<li class="person leaf" data-depth="1" data-person-id="e637ae4f-f818-4667-bcbf-3a819950ce38">
-  <div class="person-row" data-born="1930-08-21" data-died="2002-02-09">
+
+<li class="person leaf deceased-person" data-depth="1" data-person-id="e637ae4f-f818-4667-bcbf-3a819950ce38">
+  <div class="person-row deceased" data-born="1930-08-21" data-died="2002-02-09">
     <div class="person-row__content">
       <div class="person-avatar">
   
@@ -786,6 +832,9 @@
       
 
       <span class="person-name">Princess Margaret, Countess of Snowdon</span>
+      
+        <span class="deceased-badge" aria-label="Princess Margaret, Countess of Snowdon is deceased" title="Deceased (2002-02-09)">† 2002-02-09</span>
+      
 
       <template class="bio-template"><p>Princess Margaret was the younger daughter of King George VI and Queen Elizabeth, and the only sibling of Queen Elizabeth II.</p>
 </template>
