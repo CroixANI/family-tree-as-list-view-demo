@@ -1,0 +1,22 @@
+services:
+  family-tree:
+    image: ${GHCR_IMAGE:?Set GHCR_IMAGE in .env}
+    container_name: family-tree-secure
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      AUTH_HOST: 0.0.0.0
+      AUTH_PORT: 8082
+      NODE_ENV: development
+      TRUST_PROXY: 0
+    ports:
+      - "8082:8082"
+    volumes:
+      - ./examples:/app/examples
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8082/health >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
