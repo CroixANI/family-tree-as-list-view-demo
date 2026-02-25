@@ -295,12 +295,70 @@ function toGraphPersonPayload(person, ringTone) {
   };
 }
 
+const D3_DAG_UNION_PREFIX = '__union__:';
+
+function buildD3DagPayload(people, unions, generationById) {
+  const personIdSet = new Set(people.map(person => person.id));
+  const connectedNodeIds = new Set();
+  const edges = [];
+  const unionGenerationByNodeId = {};
+
+  unions.forEach(union => {
+    const partnerIds = Array.isArray(union.partnerIds)
+      ? union.partnerIds.filter(partnerId => personIdSet.has(partnerId))
+      : [];
+    const childIds = Array.isArray(union.childIds)
+      ? union.childIds.filter(childId => personIdSet.has(childId))
+      : [];
+
+    if (!partnerIds.length && !childIds.length) return;
+
+    const unionNodeId = `${D3_DAG_UNION_PREFIX}${union.id}`;
+    const partnerGenerations = partnerIds
+      .map(partnerId => Number(generationById[partnerId]))
+      .filter(value => Number.isFinite(value));
+    const unionGeneration = Number.isFinite(union.generation)
+      ? union.generation
+      : (partnerGenerations.length ? Math.min(...partnerGenerations) : 0);
+    unionGenerationByNodeId[unionNodeId] = unionGeneration;
+
+    partnerIds.forEach(partnerId => {
+      edges.push({ source: partnerId, target: unionNodeId });
+      connectedNodeIds.add(partnerId);
+      connectedNodeIds.add(unionNodeId);
+    });
+
+    childIds.forEach(childId => {
+      edges.push({ source: unionNodeId, target: childId });
+      connectedNodeIds.add(unionNodeId);
+      connectedNodeIds.add(childId);
+    });
+  });
+
+  people.forEach(person => {
+    if (connectedNodeIds.has(person.id)) return;
+    // d3-dag includes disconnected nodes via single(true) self edges.
+    edges.push({ source: person.id, target: person.id });
+  });
+
+  return {
+    unionNodePrefix: D3_DAG_UNION_PREFIX,
+    unionGenerationByNodeId,
+    edges
+  };
+}
+
 function buildGraphData(rootPersonAbs, personByAbsPath, getMarriagesForPerson, getChildrenForMarriage) {
   const emptyGraph = {
     rootPersonId: '',
     people: [],
     unions: [],
     edges: [],
+    d3Dag: {
+      unionNodePrefix: D3_DAG_UNION_PREFIX,
+      unionGenerationByNodeId: {},
+      edges: []
+    },
     generationById: {},
     maxGeneration: 0
   };
@@ -446,6 +504,7 @@ function buildGraphData(rootPersonAbs, personByAbsPath, getMarriagesForPerson, g
       edges.push({ source: union.id, target: childId, kind: 'child' });
     }
   }
+  const d3Dag = buildD3DagPayload(people, unions, generationById);
 
   const rootPerson = personByAbsPath.get(rootPersonAbs);
   return {
@@ -453,6 +512,7 @@ function buildGraphData(rootPersonAbs, personByAbsPath, getMarriagesForPerson, g
     people,
     unions,
     edges,
+    d3Dag,
     generationById,
     maxGeneration
   };
@@ -649,6 +709,11 @@ module.exports = function() {
     people: [],
     unions: [],
     edges: [],
+    d3Dag: {
+      unionNodePrefix: D3_DAG_UNION_PREFIX,
+      unionGenerationByNodeId: {},
+      edges: []
+    },
     generationById: {},
     maxGeneration: 0
   };

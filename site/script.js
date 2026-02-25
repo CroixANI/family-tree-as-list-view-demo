@@ -572,6 +572,7 @@ function computeD3DagPositionKeys({
   people,
   unions,
   generationById,
+  d3Dag,
   personById,
   nodeWidth,
   nodeStep,
@@ -582,46 +583,74 @@ function computeD3DagPositionKeys({
     return null;
   }
 
+  const unionNodePrefix = typeof d3Dag?.unionNodePrefix === 'string'
+    ? d3Dag.unionNodePrefix
+    : '__union__:';
   const unionGenerationByNodeId = new Map();
   const edgeList = [];
-  const connectedNodeIds = new Set();
 
-  unions.forEach(union => {
-    const partnerIds = Array.isArray(union.partnerIds)
-      ? union.partnerIds.filter(partnerId => personById.has(partnerId))
-      : [];
-    const childIds = Array.isArray(union.childIds)
-      ? union.childIds.filter(childId => personById.has(childId))
-      : [];
+  if (d3Dag && typeof d3Dag === 'object') {
+    const generationByNode = d3Dag.unionGenerationByNodeId && typeof d3Dag.unionGenerationByNodeId === 'object'
+      ? d3Dag.unionGenerationByNodeId
+      : {};
 
-    if (!partnerIds.length && !childIds.length) return;
-
-    const unionNodeId = `__union__:${union.id}`;
-    const partnerGenerations = partnerIds
-      .map(partnerId => Number(generationById[partnerId]))
-      .filter(value => Number.isFinite(value));
-    const unionGeneration = Number.isFinite(union.generation)
-      ? union.generation
-      : (partnerGenerations.length ? Math.min(...partnerGenerations) : 0);
-    unionGenerationByNodeId.set(unionNodeId, unionGeneration);
-
-    partnerIds.forEach(partnerId => {
-      edgeList.push([partnerId, unionNodeId]);
-      connectedNodeIds.add(partnerId);
-      connectedNodeIds.add(unionNodeId);
+    Object.entries(generationByNode).forEach(([nodeId, generation]) => {
+      const numericGeneration = Number(generation);
+      if (!Number.isFinite(numericGeneration)) return;
+      unionGenerationByNodeId.set(nodeId, numericGeneration);
     });
 
-    childIds.forEach(childId => {
-      edgeList.push([unionNodeId, childId]);
-      connectedNodeIds.add(unionNodeId);
-      connectedNodeIds.add(childId);
-    });
-  });
+    if (Array.isArray(d3Dag.edges)) {
+      d3Dag.edges.forEach(edge => {
+        const source = Array.isArray(edge) ? edge[0] : edge?.source;
+        const target = Array.isArray(edge) ? edge[1] : edge?.target;
+        if (typeof source !== 'string' || !source) return;
+        if (typeof target !== 'string' || !target) return;
+        edgeList.push([source, target]);
+      });
+    }
+  }
 
-  people.forEach(person => {
-    if (connectedNodeIds.has(person.id)) return;
-    edgeList.push([person.id, person.id]);
-  });
+  if (!edgeList.length) {
+    const connectedNodeIds = new Set();
+
+    unions.forEach(union => {
+      const partnerIds = Array.isArray(union.partnerIds)
+        ? union.partnerIds.filter(partnerId => personById.has(partnerId))
+        : [];
+      const childIds = Array.isArray(union.childIds)
+        ? union.childIds.filter(childId => personById.has(childId))
+        : [];
+
+      if (!partnerIds.length && !childIds.length) return;
+
+      const unionNodeId = `${unionNodePrefix}${union.id}`;
+      const partnerGenerations = partnerIds
+        .map(partnerId => Number(generationById[partnerId]))
+        .filter(value => Number.isFinite(value));
+      const unionGeneration = Number.isFinite(union.generation)
+        ? union.generation
+        : (partnerGenerations.length ? Math.min(...partnerGenerations) : 0);
+      unionGenerationByNodeId.set(unionNodeId, unionGeneration);
+
+      partnerIds.forEach(partnerId => {
+        edgeList.push([partnerId, unionNodeId]);
+        connectedNodeIds.add(partnerId);
+        connectedNodeIds.add(unionNodeId);
+      });
+
+      childIds.forEach(childId => {
+        edgeList.push([unionNodeId, childId]);
+        connectedNodeIds.add(unionNodeId);
+        connectedNodeIds.add(childId);
+      });
+    });
+
+    people.forEach(person => {
+      if (connectedNodeIds.has(person.id)) return;
+      edgeList.push([person.id, person.id]);
+    });
+  }
 
   try {
     const graph = d3Api.graphConnect().single(true)(edgeList);
@@ -634,7 +663,7 @@ function computeD3DagPositionKeys({
       const layering = d3Api.layeringSimplex().rank(node => {
         const nodeId = node && typeof node.data === 'string' ? node.data : '';
         if (!nodeId) return undefined;
-        if (nodeId.startsWith('__union__:')) {
+        if (nodeId.startsWith(unionNodePrefix)) {
           const unionGeneration = unionGenerationByNodeId.get(nodeId);
           if (!Number.isFinite(unionGeneration)) return undefined;
           return unionGeneration * 2 + 1;
@@ -727,6 +756,7 @@ function computeGraphLayout(graphData) {
     people,
     unions,
     generationById,
+    d3Dag: graphData?.d3Dag,
     personById,
     nodeWidth: NODE_WIDTH,
     nodeStep: NODE_STEP,
