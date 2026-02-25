@@ -7,7 +7,8 @@ module.exports = function(eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy({
     [`${config.siteInputDir}/style.css`]: 'style.css',
-    [`${config.siteInputDir}/script.js`]: 'script.js'
+    [`${config.siteInputDir}/script.js`]: 'script.js',
+    [`${config.siteInputDir}/favicon.svg`]: 'favicon.svg'
   });
 
   return {
