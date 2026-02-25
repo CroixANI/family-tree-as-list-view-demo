@@ -435,6 +435,7 @@ function buildGenerationBlocks({
   unionsAtGeneration,
   generationById,
   baseKeyById,
+  baseSourceById,
   personById
 }) {
   const blocks = [];
@@ -469,6 +470,13 @@ function buildGenerationBlocks({
   }
 
   function getAnchorKey(members) {
+    const parentAnchoredKeys = members
+      .filter(memberId => baseSourceById.get(memberId) === 'parent')
+      .map(memberId => baseKeyById.get(memberId))
+      .filter(value => Number.isFinite(value));
+
+    if (parentAnchoredKeys.length) return average(parentAnchoredKeys);
+
     const finiteKeys = members
       .map(memberId => baseKeyById.get(memberId))
       .filter(value => Number.isFinite(value));
@@ -560,6 +568,108 @@ function buildGenerationBlocks({
   return blocks;
 }
 
+function computeD3DagPositionKeys({
+  people,
+  unions,
+  generationById,
+  personById,
+  nodeWidth,
+  nodeStep,
+  levelGap
+}) {
+  const d3Api = (typeof window !== 'undefined' && window && window.d3) ? window.d3 : null;
+  if (!d3Api || typeof d3Api.graphConnect !== 'function' || typeof d3Api.sugiyama !== 'function') {
+    return null;
+  }
+
+  const unionGenerationByNodeId = new Map();
+  const edgeList = [];
+  const connectedNodeIds = new Set();
+
+  unions.forEach(union => {
+    const partnerIds = Array.isArray(union.partnerIds)
+      ? union.partnerIds.filter(partnerId => personById.has(partnerId))
+      : [];
+    const childIds = Array.isArray(union.childIds)
+      ? union.childIds.filter(childId => personById.has(childId))
+      : [];
+
+    if (!partnerIds.length && !childIds.length) return;
+
+    const unionNodeId = `__union__:${union.id}`;
+    const partnerGenerations = partnerIds
+      .map(partnerId => Number(generationById[partnerId]))
+      .filter(value => Number.isFinite(value));
+    const unionGeneration = Number.isFinite(union.generation)
+      ? union.generation
+      : (partnerGenerations.length ? Math.min(...partnerGenerations) : 0);
+    unionGenerationByNodeId.set(unionNodeId, unionGeneration);
+
+    partnerIds.forEach(partnerId => {
+      edgeList.push([partnerId, unionNodeId]);
+      connectedNodeIds.add(partnerId);
+      connectedNodeIds.add(unionNodeId);
+    });
+
+    childIds.forEach(childId => {
+      edgeList.push([unionNodeId, childId]);
+      connectedNodeIds.add(unionNodeId);
+      connectedNodeIds.add(childId);
+    });
+  });
+
+  people.forEach(person => {
+    if (connectedNodeIds.has(person.id)) return;
+    edgeList.push([person.id, person.id]);
+  });
+
+  try {
+    const graph = d3Api.graphConnect().single(true)(edgeList);
+
+    let layoutOperator = d3Api.sugiyama()
+      .nodeSize([nodeWidth, 1])
+      .gap([Math.max(24, nodeStep - nodeWidth), Math.max(24, levelGap / 2)]);
+
+    if (typeof d3Api.layeringSimplex === 'function') {
+      const layering = d3Api.layeringSimplex().rank(node => {
+        const nodeId = node && typeof node.data === 'string' ? node.data : '';
+        if (!nodeId) return undefined;
+        if (nodeId.startsWith('__union__:')) {
+          const unionGeneration = unionGenerationByNodeId.get(nodeId);
+          if (!Number.isFinite(unionGeneration)) return undefined;
+          return unionGeneration * 2 + 1;
+        }
+
+        const personGeneration = Number(generationById[nodeId]);
+        if (!Number.isFinite(personGeneration)) return undefined;
+        return personGeneration * 2;
+      });
+      layoutOperator = layoutOperator.layering(layering);
+    }
+
+    if (typeof d3Api.decrossTwoLayer === 'function') {
+      layoutOperator = layoutOperator.decross(d3Api.decrossTwoLayer());
+    }
+    if (typeof d3Api.coordSimplex === 'function') {
+      layoutOperator = layoutOperator.coord(d3Api.coordSimplex());
+    }
+
+    layoutOperator(graph);
+
+    const positionKeys = new Map();
+    for (const node of graph.nodes()) {
+      const nodeId = node && typeof node.data === 'string' ? node.data : '';
+      if (!nodeId || !personById.has(nodeId)) continue;
+      if (!Number.isFinite(node.x)) continue;
+      positionKeys.set(nodeId, node.x);
+    }
+
+    return positionKeys.size ? positionKeys : null;
+  } catch (_error) {
+    return null;
+  }
+}
+
 function computeGraphLayout(graphData) {
   const people = Array.isArray(graphData?.people) ? graphData.people : [];
   const unions = Array.isArray(graphData?.unions) ? graphData.unions : [];
@@ -613,6 +723,16 @@ function computeGraphLayout(graphData) {
   const BRANCH_DROP = 142;
   const CHILD_ANCHOR_GAP = AVATAR_RADIUS + 14;
 
+  const dagPositionKeys = computeD3DagPositionKeys({
+    people,
+    unions,
+    generationById,
+    personById,
+    nodeWidth: NODE_WIDTH,
+    nodeStep: NODE_STEP,
+    levelGap: LEVEL_GAP
+  });
+
   const maxGeneration = Math.max(
     0,
     ...people.map(person => Number(generationById[person.id]) || 0)
@@ -625,13 +745,23 @@ function computeGraphLayout(graphData) {
     if (!ids.length) continue;
 
     const baseKeyById = new Map();
+    const baseSourceById = new Map();
     ids.forEach(personId => {
+      const dagKey = dagPositionKeys ? dagPositionKeys.get(personId) : Number.NaN;
       if (generation === 0) {
+        if (Number.isFinite(dagKey)) {
+          baseKeyById.set(personId, dagKey);
+          baseSourceById.set(personId, 'dag');
+          return;
+        }
+
         if (personId === rootPersonId) {
           baseKeyById.set(personId, -1e9);
+          baseSourceById.set(personId, 'root');
           return;
         }
         baseKeyById.set(personId, personById.get(personId).fullName.localeCompare(personById.get(rootPersonId)?.fullName || ''));
+        baseSourceById.set(personId, 'name');
         return;
       }
 
@@ -641,8 +771,15 @@ function computeGraphLayout(graphData) {
         .filter(value => Number.isFinite(value));
       if (parentXs.length) {
         baseKeyById.set(personId, average(parentXs));
+        baseSourceById.set(personId, 'parent');
       } else {
-        baseKeyById.set(personId, Number.POSITIVE_INFINITY);
+        if (Number.isFinite(dagKey)) {
+          baseKeyById.set(personId, dagKey);
+          baseSourceById.set(personId, 'dag');
+        } else {
+          baseKeyById.set(personId, Number.POSITIVE_INFINITY);
+          baseSourceById.set(personId, 'fallback');
+        }
       }
     });
 
@@ -664,6 +801,7 @@ function computeGraphLayout(graphData) {
       unionsAtGeneration,
       generationById,
       baseKeyById,
+      baseSourceById,
       personById
     });
 
@@ -674,6 +812,16 @@ function computeGraphLayout(graphData) {
     }
     const desiredFirstCenters = blocks.map(block => {
       if (generation === 0) return Number.NaN;
+
+      const parentAnchoredStarts = block.members
+        .map((memberId, index) => ({
+          source: baseSourceById.get(memberId),
+          start: Number(baseKeyById.get(memberId)) - index * NODE_STEP
+        }))
+        .filter(item => item.source === 'parent' && Number.isFinite(item.start))
+        .map(item => item.start);
+
+      if (parentAnchoredStarts.length) return average(parentAnchoredStarts);
 
       const anchoredStarts = block.members
         .map((memberId, index) => {
@@ -924,8 +1072,8 @@ function setupGraphView() {
       return;
     }
 
-    if (!window.d3) {
-      showMessage('Graph library did not load. Reload the page to try again.');
+    if (!window.d3 || typeof window.d3.graphConnect !== 'function' || typeof window.d3.sugiyama !== 'function') {
+      showMessage('Graph layout libraries did not load. Reload the page to try again.');
       isRendered = true;
       return;
     }
