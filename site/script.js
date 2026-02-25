@@ -468,6 +468,15 @@ function buildGenerationBlocks({
     return (orderIndex.get(personId) ?? 10000) * 1000;
   }
 
+  function getAnchorKey(members) {
+    const finiteKeys = members
+      .map(memberId => baseKeyById.get(memberId))
+      .filter(value => Number.isFinite(value));
+
+    if (finiteKeys.length) return average(finiteKeys);
+    return average(members.map(memberId => getSortKey(memberId)));
+  }
+
   const hubIds = orderedIds.filter(personId => {
     const partners = partnersFor(personId);
     return partners.length > 1;
@@ -504,7 +513,7 @@ function buildGenerationBlocks({
     members.forEach(memberId => used.add(memberId));
     blocks.push({
       members,
-      key: average(members.map(memberId => getSortKey(memberId)))
+      key: getAnchorKey(members)
     });
   }
 
@@ -528,7 +537,7 @@ function buildGenerationBlocks({
         pair.forEach(memberId => used.add(memberId));
         blocks.push({
           members: pair,
-          key: average(pair.map(memberId => getSortKey(memberId)))
+          key: getAnchorKey(pair)
         });
         continue;
       }
@@ -537,7 +546,7 @@ function buildGenerationBlocks({
     used.add(personId);
     blocks.push({
       members: [personId],
-      key: getSortKey(personId)
+      key: getAnchorKey([personId])
     });
   }
 
@@ -600,7 +609,6 @@ function computeGraphLayout(graphData) {
   const LEVEL_GAP = 280;
   const AVATAR_RADIUS = 51;
   const TOP_OFFSET = 92;
-  const LEFT_PADDING = 120;
   const OUTER_PADDING = 120;
   const BRANCH_DROP = 142;
   const CHILD_ANCHOR_GAP = AVATAR_RADIUS + 14;
@@ -611,7 +619,6 @@ function computeGraphLayout(graphData) {
   );
   const provisionalXById = new Map();
   const provisionalUnionXById = new Map();
-  const rowBoundsByGeneration = new Map();
 
   for (let generation = 0; generation <= maxGeneration; generation += 1) {
     const ids = (personIdsByGeneration.get(generation) || []).filter(personId => personById.has(personId));
@@ -639,10 +646,14 @@ function computeGraphLayout(graphData) {
       }
     });
 
+    const sourceOrder = new Map(ids.map((id, index) => [id, index]));
     const orderedIds = ids.slice().sort((aId, bId) => {
       const keyA = baseKeyById.get(aId);
       const keyB = baseKeyById.get(bId);
       if (keyA !== keyB) return keyA - keyB;
+      const orderA = sourceOrder.get(aId) ?? 10000;
+      const orderB = sourceOrder.get(bId) ?? 10000;
+      if (orderA !== orderB) return orderA - orderB;
       return personById.get(aId).fullName.localeCompare(personById.get(bId).fullName);
     });
 
@@ -656,29 +667,58 @@ function computeGraphLayout(graphData) {
       personById
     });
 
-    let cursorX = 0;
-    blocks.forEach(block => {
-      block.members.forEach((memberId, index) => {
-        provisionalXById.set(memberId, cursorX + index * NODE_STEP);
-      });
+    const minFirstCenterGap = NODE_WIDTH + BLOCK_GAP;
+    const desiredFirstCenters = blocks.map(block => {
+      if (generation === 0) return Number.NaN;
 
-      const blockWidth = NODE_WIDTH + Math.max(0, (block.members.length - 1) * NODE_STEP);
-      cursorX += blockWidth + BLOCK_GAP;
+      const anchoredStarts = block.members
+        .map((memberId, index) => {
+          const key = baseKeyById.get(memberId);
+          return Number.isFinite(key) ? key - index * NODE_STEP : Number.NaN;
+        })
+        .filter(value => Number.isFinite(value));
+
+      if (!anchoredStarts.length) return Number.NaN;
+      return average(anchoredStarts);
     });
 
-    const centers = ids
-      .map(personId => provisionalXById.get(personId))
-      .filter(value => Number.isFinite(value));
-
-    if (centers.length) {
-      const minCenter = Math.min(...centers);
-      const maxCenter = Math.max(...centers);
-      rowBoundsByGeneration.set(generation, {
-        minCenter,
-        maxCenter,
-        span: maxCenter - minCenter
+    const firstCenters = [];
+    if (generation === 0) {
+      blocks.forEach((_block, index) => {
+        firstCenters[index] = index === 0 ? 0 : firstCenters[index - 1] + minFirstCenterGap;
       });
+    } else {
+      const forward = [];
+      for (let i = 0; i < blocks.length; i += 1) {
+        const desired = Number.isFinite(desiredFirstCenters[i])
+          ? desiredFirstCenters[i]
+          : (i === 0 ? 0 : forward[i - 1] + minFirstCenterGap);
+        forward[i] = i === 0
+          ? desired
+          : Math.max(desired, forward[i - 1] + minFirstCenterGap);
+      }
+
+      const backward = [];
+      for (let i = blocks.length - 1; i >= 0; i -= 1) {
+        const desired = Number.isFinite(desiredFirstCenters[i])
+          ? desiredFirstCenters[i]
+          : (i === blocks.length - 1 ? forward[i] : backward[i + 1] - minFirstCenterGap);
+        backward[i] = i === blocks.length - 1
+          ? desired
+          : Math.min(desired, backward[i + 1] - minFirstCenterGap);
+      }
+
+      for (let i = 0; i < blocks.length; i += 1) {
+        firstCenters[i] = (forward[i] + backward[i]) / 2;
+      }
     }
+
+    blocks.forEach((block, blockIndex) => {
+      const firstCenter = firstCenters[blockIndex];
+      block.members.forEach((memberId, memberIndex) => {
+        provisionalXById.set(memberId, firstCenter + memberIndex * NODE_STEP);
+      });
+    });
 
     unionsAtGeneration.forEach(union => {
       const partnerXs = Array.isArray(union.partnerIds)
@@ -693,21 +733,14 @@ function computeGraphLayout(graphData) {
     });
   }
 
-  if (!rowBoundsByGeneration.size) return null;
-
-  const maxRowSpan = Math.max(...Array.from(rowBoundsByGeneration.values()).map(row => row.span), 0);
-  const rowOffsetByGeneration = new Map();
-  for (const [generation, row] of rowBoundsByGeneration.entries()) {
-    const offset = LEFT_PADDING + (maxRowSpan - row.span) / 2 - row.minCenter;
-    rowOffsetByGeneration.set(generation, offset);
-  }
+  if (!provisionalXById.size) return null;
 
   const nodes = [];
   const nodeById = new Map();
   people.forEach(person => {
     if (!provisionalXById.has(person.id)) return;
     const generation = Number(generationById[person.id]) || 0;
-    const x = provisionalXById.get(person.id) + (rowOffsetByGeneration.get(generation) || LEFT_PADDING);
+    const x = provisionalXById.get(person.id);
     const y = TOP_OFFSET + generation * LEVEL_GAP;
     const node = { ...person, generation, x, y };
     nodes.push(node);
