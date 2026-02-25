@@ -816,10 +816,12 @@ function computeGraphLayout(graphData) {
 
     const childXs = childNodes.map(child => child.x);
     if (childNodes.length > 1) {
+      const branchStartX = Math.min(unionPos.x, ...childXs);
+      const branchEndX = Math.max(unionPos.x, ...childXs);
       lines.push({
-        x1: Math.min(...childXs),
+        x1: branchStartX,
         y1: branchY,
-        x2: Math.max(...childXs),
+        x2: branchEndX,
         y2: branchY
       });
     } else {
