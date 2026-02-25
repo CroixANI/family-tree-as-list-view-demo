@@ -668,6 +668,10 @@ function computeGraphLayout(graphData) {
     });
 
     const minFirstCenterGap = NODE_WIDTH + BLOCK_GAP;
+    const blockSpans = blocks.map(block => Math.max(0, (block.members.length - 1) * NODE_STEP));
+    function minGapAfter(blockIndex) {
+      return blockSpans[blockIndex] + minFirstCenterGap;
+    }
     const desiredFirstCenters = blocks.map(block => {
       if (generation === 0) return Number.NaN;
 
@@ -685,27 +689,27 @@ function computeGraphLayout(graphData) {
     const firstCenters = [];
     if (generation === 0) {
       blocks.forEach((_block, index) => {
-        firstCenters[index] = index === 0 ? 0 : firstCenters[index - 1] + minFirstCenterGap;
+        firstCenters[index] = index === 0 ? 0 : firstCenters[index - 1] + minGapAfter(index - 1);
       });
     } else {
       const forward = [];
       for (let i = 0; i < blocks.length; i += 1) {
         const desired = Number.isFinite(desiredFirstCenters[i])
           ? desiredFirstCenters[i]
-          : (i === 0 ? 0 : forward[i - 1] + minFirstCenterGap);
+          : (i === 0 ? 0 : forward[i - 1] + minGapAfter(i - 1));
         forward[i] = i === 0
           ? desired
-          : Math.max(desired, forward[i - 1] + minFirstCenterGap);
+          : Math.max(desired, forward[i - 1] + minGapAfter(i - 1));
       }
 
       const backward = [];
       for (let i = blocks.length - 1; i >= 0; i -= 1) {
         const desired = Number.isFinite(desiredFirstCenters[i])
           ? desiredFirstCenters[i]
-          : (i === blocks.length - 1 ? forward[i] : backward[i + 1] - minFirstCenterGap);
+          : (i === blocks.length - 1 ? forward[i] : backward[i + 1] - minGapAfter(i));
         backward[i] = i === blocks.length - 1
           ? desired
-          : Math.min(desired, backward[i + 1] - minFirstCenterGap);
+          : Math.min(desired, backward[i + 1] - minGapAfter(i));
       }
 
       for (let i = 0; i < blocks.length; i += 1) {
