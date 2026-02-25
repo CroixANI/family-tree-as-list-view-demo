@@ -253,13 +253,279 @@ function sortPeople(a, b) {
   return a.fullName.localeCompare(b.fullName);
 }
 
+function hashUnionId(seed) {
+  return `u-${crypto.createHash('sha1').update(seed).digest('hex').slice(0, 12)}`;
+}
+
+function inferRingTone(person, roleVote) {
+  const text = `${person.fullName} ${Array.isArray(person.titles) ? person.titles.join(' ') : ''}`.toLowerCase();
+  const femaleHintPatterns = [/\bqueen\b/, /\bprincess\b/, /\bduchess\b/, /\bcountess\b/, /\blady\b/];
+  const maleHintPatterns = [/\bking\b/, /\bprince\b/, /\bduke\b/, /\bearl\b/, /\blord\b/];
+
+  const hasFemaleHint = femaleHintPatterns.some(pattern => pattern.test(text));
+  const hasMaleHint = maleHintPatterns.some(pattern => pattern.test(text));
+
+  if (hasFemaleHint && !hasMaleHint) return 'orange';
+  if (hasMaleHint && !hasFemaleHint) return 'blue';
+
+  if (roleVote && roleVote.second > roleVote.first) return 'orange';
+  return 'blue';
+}
+
+function selectGraphSubtitle(titles) {
+  if (!Array.isArray(titles) || titles.length === 0) return '';
+  const firstTitle = cleanScalar(titles[0] || '');
+  if (!firstTitle) return '';
+  return firstTitle.length < 30 ? firstTitle : '';
+}
+
+function toGraphPersonPayload(person, ringTone) {
+  return {
+    id: person.id,
+    fullName: person.fullName,
+    subtitle: selectGraphSubtitle(person.titles),
+    born: person.born,
+    died: person.died,
+    deceased: Boolean(person.died),
+    initials: person.initials,
+    ringTone,
+    photo: person.photo && person.photo.url
+      ? { url: person.photo.url, remote: Boolean(person.photo.remote) }
+      : null
+  };
+}
+
+const D3_DAG_UNION_PREFIX = '__union__:';
+
+function buildD3DagPayload(people, unions, generationById) {
+  const personIdSet = new Set(people.map(person => person.id));
+  const connectedNodeIds = new Set();
+  const edges = [];
+  const unionGenerationByNodeId = {};
+
+  unions.forEach(union => {
+    const partnerIds = Array.isArray(union.partnerIds)
+      ? union.partnerIds.filter(partnerId => personIdSet.has(partnerId))
+      : [];
+    const childIds = Array.isArray(union.childIds)
+      ? union.childIds.filter(childId => personIdSet.has(childId))
+      : [];
+
+    if (!partnerIds.length && !childIds.length) return;
+
+    const unionNodeId = `${D3_DAG_UNION_PREFIX}${union.id}`;
+    const partnerGenerations = partnerIds
+      .map(partnerId => Number(generationById[partnerId]))
+      .filter(value => Number.isFinite(value));
+    const unionGeneration = Number.isFinite(union.generation)
+      ? union.generation
+      : (partnerGenerations.length ? Math.min(...partnerGenerations) : 0);
+    unionGenerationByNodeId[unionNodeId] = unionGeneration;
+
+    partnerIds.forEach(partnerId => {
+      edges.push({ source: partnerId, target: unionNodeId });
+      connectedNodeIds.add(partnerId);
+      connectedNodeIds.add(unionNodeId);
+    });
+
+    childIds.forEach(childId => {
+      edges.push({ source: unionNodeId, target: childId });
+      connectedNodeIds.add(unionNodeId);
+      connectedNodeIds.add(childId);
+    });
+  });
+
+  people.forEach(person => {
+    if (connectedNodeIds.has(person.id)) return;
+    // d3-dag includes disconnected nodes via single(true) self edges.
+    edges.push({ source: person.id, target: person.id });
+  });
+
+  return {
+    unionNodePrefix: D3_DAG_UNION_PREFIX,
+    unionGenerationByNodeId,
+    edges
+  };
+}
+
+function buildGraphData(rootPersonAbs, personByAbsPath, getMarriagesForPerson, getChildrenForMarriage) {
+  const emptyGraph = {
+    rootPersonId: '',
+    people: [],
+    unions: [],
+    edges: [],
+    d3Dag: {
+      unionNodePrefix: D3_DAG_UNION_PREFIX,
+      unionGenerationByNodeId: {},
+      edges: []
+    },
+    generationById: {},
+    maxGeneration: 0
+  };
+
+  if (!rootPersonAbs || !personByAbsPath.has(rootPersonAbs)) {
+    return emptyGraph;
+  }
+
+  const peopleById = new Map();
+  const personAbsById = new Map();
+  const unionsById = new Map();
+  const roleVotesByAbs = new Map();
+  const generationByAbs = new Map();
+  const queue = [{ absPath: rootPersonAbs, generation: 0 }];
+  generationByAbs.set(rootPersonAbs, 0);
+
+  function ensurePerson(absPath) {
+    if (!absPath) return null;
+    const person = personByAbsPath.get(absPath);
+    if (!person) return null;
+
+    peopleById.set(person.id, person);
+    personAbsById.set(person.id, absPath);
+    return person;
+  }
+
+  function setGeneration(absPath, generation) {
+    if (!absPath) return false;
+    const previous = generationByAbs.get(absPath);
+    if (previous === undefined || generation < previous) {
+      generationByAbs.set(absPath, generation);
+      return true;
+    }
+    return false;
+  }
+
+  function voteRole(absPath, role) {
+    if (!absPath) return;
+    if (!roleVotesByAbs.has(absPath)) {
+      roleVotesByAbs.set(absPath, { first: 0, second: 0 });
+    }
+    const counters = roleVotesByAbs.get(absPath);
+    if (role === 'second') {
+      counters.second += 1;
+      return;
+    }
+    counters.first += 1;
+  }
+
+  for (let i = 0; i < queue.length; i += 1) {
+    const { absPath, generation } = queue[i];
+    const knownGeneration = generationByAbs.get(absPath);
+    if (knownGeneration !== undefined && generation > knownGeneration) continue;
+
+    const person = ensurePerson(absPath);
+    if (!person) continue;
+
+    const marriages = getMarriagesForPerson(absPath);
+    for (const marriage of marriages) {
+      const unionId = hashUnionId(marriage.dirAbsPath);
+      if (!unionsById.has(unionId)) {
+        unionsById.set(unionId, {
+          id: unionId,
+          partnerIds: [],
+          childIds: [],
+          married: marriage.married,
+          endedBy: marriage.endedBy,
+          generation
+        });
+      }
+
+      const union = unionsById.get(unionId);
+      union.generation = Math.min(union.generation, generation);
+
+      marriage.partnerRefs.forEach((partnerAbs, index) => {
+        const partner = ensurePerson(partnerAbs);
+        if (!partner) return;
+
+        setGeneration(partnerAbs, generation);
+        voteRole(partnerAbs, index === 1 ? 'second' : 'first');
+
+        if (!union.partnerIds.includes(partner.id)) {
+          union.partnerIds.push(partner.id);
+        }
+      });
+
+      const children = getChildrenForMarriage(marriage);
+      for (const child of children) {
+        const childPerson = ensurePerson(child.absPath);
+        if (!childPerson) continue;
+
+        if (!union.childIds.includes(childPerson.id)) {
+          union.childIds.push(childPerson.id);
+        }
+
+        const nextGeneration = generation + 1;
+        if (setGeneration(child.absPath, nextGeneration)) {
+          queue.push({ absPath: child.absPath, generation: nextGeneration });
+        }
+      }
+    }
+  }
+
+  const generationById = {};
+  for (const [personId, absPath] of personAbsById.entries()) {
+    generationById[personId] = generationByAbs.get(absPath) ?? 0;
+  }
+
+  const maxGeneration = Object.values(generationById).reduce((max, depth) => Math.max(max, depth), 0);
+
+  const people = Array.from(peopleById.values())
+    .sort((a, b) => {
+      const generationA = generationById[a.id] ?? 0;
+      const generationB = generationById[b.id] ?? 0;
+      if (generationA !== generationB) return generationA - generationB;
+      return sortPeople(a, b);
+    })
+    .map(person => {
+      const absPath = personAbsById.get(person.id);
+      const roleVote = absPath ? roleVotesByAbs.get(absPath) : null;
+      const ringTone = inferRingTone(person, roleVote);
+      return toGraphPersonPayload(person, ringTone);
+    });
+
+  const unions = Array.from(unionsById.values())
+    .map(union => ({
+      ...union,
+      partnerIds: union.partnerIds.filter(partnerId => peopleById.has(partnerId)),
+      childIds: union.childIds.filter(childId => peopleById.has(childId))
+    }))
+    .filter(union => union.partnerIds.length > 0)
+    .sort((a, b) => {
+      if (a.generation !== b.generation) return a.generation - b.generation;
+      return a.id.localeCompare(b.id);
+    });
+
+  const edges = [];
+  for (const union of unions) {
+    for (const partnerId of union.partnerIds) {
+      edges.push({ source: partnerId, target: union.id, kind: 'partner' });
+    }
+    for (const childId of union.childIds) {
+      edges.push({ source: union.id, target: childId, kind: 'child' });
+    }
+  }
+  const d3Dag = buildD3DagPayload(people, unions, generationById);
+
+  const rootPerson = personByAbsPath.get(rootPersonAbs);
+  return {
+    rootPersonId: rootPerson ? rootPerson.id : '',
+    people,
+    unions,
+    edges,
+    d3Dag,
+    generationById,
+    maxGeneration
+  };
+}
+
 function buildTree({
   sourceDirRel,
   sourceDirAbs,
   workspaceRootAbs,
   rootPersonName,
   outputAvatarsDirRel,
-  avatarsPublicPath
+  avatarsPublicPath,
+  pathPrefix
 }) {
   const markdownFiles = walkMarkdown(sourceDirAbs);
 
@@ -416,11 +682,15 @@ function getChildrenForMarriage(marriage) {
   }
 
   const rootNode = rootPersonAbs ? toNode(rootPersonAbs, visitedGuard) : null;
+  const graph = buildGraphData(rootPersonAbs, personByAbsPath, getMarriagesForPerson, getChildrenForMarriage);
 
   return {
     sourceDir: sourceDirRel,
     imageFallbackOrder: IMAGE_EXT_FALLBACK_ORDER,
+    pathPrefix,
     root: rootNode,
+    graph,
+    graphJson: JSON.stringify(graph),
     totalPeople: personByAbsPath.size,
     generatedAt: new Date().toISOString()
   };
@@ -434,12 +704,28 @@ module.exports = function() {
   const rootPersonName = config.familyRootPerson;
   const outputAvatarsDirRel = path.join(config.siteOutputDir, config.avatarsSubdir);
   const avatarsPublicPath = `/${toPosix(config.avatarsSubdir).replace(/^\/+|\/+$/g, '')}`;
+  const emptyGraph = {
+    rootPersonId: '',
+    people: [],
+    unions: [],
+    edges: [],
+    d3Dag: {
+      unionNodePrefix: D3_DAG_UNION_PREFIX,
+      unionGenerationByNodeId: {},
+      edges: []
+    },
+    generationById: {},
+    maxGeneration: 0
+  };
 
   if (!fs.existsSync(sourceDirAbs) || !fs.statSync(sourceDirAbs).isDirectory()) {
     return {
       sourceDir: sourceDirRel,
       imageFallbackOrder: IMAGE_EXT_FALLBACK_ORDER,
+      pathPrefix: config.eleventyPathPrefix,
       root: null,
+      graph: emptyGraph,
+      graphJson: JSON.stringify(emptyGraph),
       totalPeople: 0,
       generatedAt: new Date().toISOString(),
       error: `Family source folder not found: ${sourceDirRel}`
@@ -452,6 +738,7 @@ module.exports = function() {
     workspaceRootAbs,
     rootPersonName,
     outputAvatarsDirRel,
-    avatarsPublicPath
+    avatarsPublicPath,
+    pathPrefix: config.eleventyPathPrefix
   });
 };

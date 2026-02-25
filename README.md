@@ -81,6 +81,12 @@ Open a specific person by ID (auto-expand ancestors + highlight row):
 http://localhost:8082/?pid=<person-id>
 ```
 
+Open directly in graph mode:
+
+```text
+http://localhost:8082/?view=graph
+```
+
 ## Source data format
 
 - Person file: `Person Name.md`
