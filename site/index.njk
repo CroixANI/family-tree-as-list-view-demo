@@ -10,9 +10,9 @@ title: Family Tree
   <p class="royal-subtitle">Generated with Eleventy</p>
   <p class="tree-source">Source folder: <code>{{ familyTree.sourceDir }}</code></p>
 
-  <div class="controls">
-    <button id="expand-all" type="button" aria-label="Expand all family branches">Expand All</button>
-    <button id="collapse-all" type="button" aria-label="Collapse all family branches except the root">Collapse All</button>
+  <div class="controls controls--view" role="group" aria-label="Select family tree view">
+    <button id="view-list" class="view-btn is-active" data-view="list" type="button" aria-pressed="true">List View</button>
+    <button id="view-graph" class="view-btn" data-view="graph" type="button" aria-pressed="false">Graph View</button>
   </div>
   <p class="tree-legend" aria-label="Tree legend">
     <span class="legend-chip deceased">† Deceased</span>
@@ -34,9 +34,28 @@ title: Family Tree
       <p>Check person markdown files and `_marriage.md` references.</p>
     </div>
   {% else %}
-    <ul class="family-tree">
-      {{ renderPerson(familyTree.root, 0) }}
-    </ul>
+    <section id="list-view" class="tree-view tree-view--list">
+      <div class="controls controls--list">
+        <button id="expand-all" type="button" aria-label="Expand all family branches">Expand All</button>
+        <button id="collapse-all" type="button" aria-label="Collapse all family branches except the root">Collapse All</button>
+      </div>
+      <ul class="family-tree">
+        {{ renderPerson(familyTree.root, 0) }}
+      </ul>
+    </section>
+
+    <section id="graph-view" class="tree-view tree-view--graph" data-path-prefix="{{ '/' | url }}" hidden>
+      <div class="controls controls--graph">
+        <button id="graph-reset-view" type="button" aria-label="Reset graph zoom and pan to fit">Reset Graph View</button>
+      </div>
+      <p class="graph-instructions">Drag to pan. Scroll/pinch or double-tap to zoom.</p>
+      <div class="graph-canvas" id="graph-canvas" role="img" aria-label="Royal family relationship graph">
+        <div class="graph-world" id="graph-world">
+          <svg class="graph-links" id="graph-links" aria-hidden="true"></svg>
+          <div class="graph-nodes" id="graph-nodes"></div>
+        </div>
+      </div>
+    </section>
   {% endif %}
 
   <div class="details-overlay" id="details-overlay" hidden>
@@ -82,4 +101,7 @@ title: Family Tree
       </section>
     </div>
   </div>
+
+  <script id="graph-data" type="application/json">{{ familyTree.graphJson | safe }}</script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 </main>

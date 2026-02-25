@@ -94,6 +94,16 @@ body {
     justify-content: center;
 }
 
+.controls--view {
+    margin-bottom: 2px;
+}
+
+.controls--list,
+.controls--graph {
+    justify-content: flex-start;
+    margin: 0 0 14px;
+}
+
 .tree-legend {
     margin: 10px 0 0;
     font-size: 12px;
@@ -136,9 +146,19 @@ body {
     color: var(--royal-blue);
 }
 
+.view-btn {
+    min-width: 120px;
+}
+
+.view-btn.is-active {
+    background: var(--gold);
+    color: var(--royal-blue);
+    border-color: #f0d37f;
+}
+
 main {
     padding: 32px 20px 60px;
-    max-width: 980px;
+    max-width: 1240px;
     margin: 0 auto;
 }
 
@@ -152,6 +172,139 @@ main {
 
 .build-error h2 {
     margin-top: 0;
+}
+
+.tree-view[hidden] {
+    display: none;
+}
+
+.tree-view--graph {
+    background: #ebebeb;
+    border: 1px solid #d3d3d3;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.graph-instructions {
+    margin: 0 0 10px;
+    color: #676767;
+    font-size: 13px;
+}
+
+.graph-canvas {
+    position: relative;
+    width: 100%;
+    height: min(74vh, 760px);
+    min-height: 420px;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid #c8c8c8;
+    background:
+        radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 52%),
+        #e5e5e5;
+    touch-action: none;
+}
+
+.graph-world {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform-origin: 0 0;
+}
+
+.graph-links {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.graph-links line {
+    stroke: #b8b8b8;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.graph-links circle {
+    fill: #1a1a1a;
+}
+
+.graph-nodes {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.graph-person {
+    position: absolute;
+    --graph-avatar-size: 102px;
+    width: 190px;
+    transform: translate(-50%, 0);
+    text-align: center;
+    user-select: none;
+}
+
+.graph-avatar {
+    width: var(--graph-avatar-size);
+    height: var(--graph-avatar-size);
+    border-radius: 50%;
+    overflow: hidden;
+    margin: calc(var(--graph-avatar-size) * -0.5) auto 0;
+    border: 4px solid #1f95d6;
+    background: #f9f9f9;
+    box-shadow:
+        0 0 0 4px #ffffff,
+        0 2px 8px rgba(0, 0, 0, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.graph-avatar.ring-orange {
+    border-color: #ea7d0b;
+}
+
+.graph-avatar.ring-blue {
+    border-color: #1f95d6;
+}
+
+.graph-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.graph-person.deceased .graph-avatar img {
+    filter: grayscale(100%) saturate(45%);
+}
+
+.graph-avatar-fallback {
+    font-size: 24px;
+    font-weight: 700;
+    color: #555;
+    letter-spacing: 0.6px;
+}
+
+.graph-person-name {
+    margin-top: 9px;
+    font-size: 27px;
+    font-size: clamp(14px, 1.15vw, 27px);
+    line-height: 1.08;
+    font-weight: 700;
+    color: #8d8d8d;
+}
+
+.graph-person-subtitle {
+    margin-top: 3px;
+    color: #969696;
+    font-size: 20px;
+    font-size: clamp(11px, 0.9vw, 20px);
+    line-height: 1.2;
+}
+
+.graph-person-subtitle.is-empty {
+    display: none;
 }
 
 .family-tree {
@@ -803,9 +956,35 @@ main {
         padding: 20px 12px 40px;
     }
 
+    .controls--view {
+        flex-wrap: wrap;
+    }
+
+    .view-btn {
+        min-width: 110px;
+    }
+
     .royal-header h1 {
         font-size: 20px;
         letter-spacing: 1px;
+    }
+
+    .tree-view--graph {
+        padding: 12px;
+    }
+
+    .graph-canvas {
+        min-height: 360px;
+        height: min(70vh, 620px);
+    }
+
+    .graph-person {
+        --graph-avatar-size: 86px;
+        width: 154px;
+    }
+
+    .graph-avatar-fallback {
+        font-size: 19px;
     }
 
     .person-avatar {
