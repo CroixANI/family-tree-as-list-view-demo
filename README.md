@@ -7,6 +7,7 @@ Auth planning artifacts:
 - `docs/auth-requirements.md`
 - `docs/auth-implementation-plan.md`
 - `docs/deploy-docker-compose.md`
+- `docs/auth-flow-sequence.md`
 
 ## Install
 
@@ -65,7 +66,7 @@ Optionally select an explicit root person:
 FAMILY_DATA_DIR=examples/my-family-files FAMILY_ROOT_PERSON="Jane Doe" npm run build
 ```
 
-Build for a GitHub Pages project path (for example `/my-repo/`):
+Build for a subpath deployment (for example `/family-tree/` behind a reverse proxy):
 
 ```bash
 ELEVENTY_PATH_PREFIX=/my-repo/ npm run build
@@ -107,7 +108,7 @@ http://localhost:8082/?view=graph
 
 This mode gates the generated site behind server-side authentication and an email allowlist.
 
-Important: this requires a self-hosted Node server. Pure GitHub Pages static hosting cannot enforce server-side auth for all file access.
+Important: this requires a self-hosted Node server. Do not expose `SITE_OUTPUT_DIR` directly via an unauthenticated public static host.
 
 Minimal `.env` values:
 
@@ -214,6 +215,7 @@ Generate demo photos automatically for the current royal dataset:
 npm run photos:demo
 ```
 
+<<<<<<< HEAD
 Download public photos (Wikipedia/Wikimedia) into sibling files and remove `photo:` URLs from frontmatter:
 
 ```bash
@@ -226,6 +228,9 @@ A workflow is provided at `.github/workflows/deploy-pages.yml`.
 It builds the site and deploys `SITE_OUTPUT_DIR` to GitHub Pages.
 
 This workflow is for public static hosting. If you need access control with allowlisted emails, deploy secure mode to your own server/VPS instead of GitHub Pages.
+=======
+## CI/CD
+>>>>>>> 0ec5150 (Document auth flow and README cleanup)
 
 Docker image publishing workflow:
 

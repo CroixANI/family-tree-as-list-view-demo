@@ -9,7 +9,7 @@
     "photos:demo": "node scripts/generate-demo-photos.js",
     "photos:public": "node scripts/download-public-photos.js",
     "serve:secure": "node server/index.js",
-    "start:secure": "npm run build && node server/index.js",
+    "start:secure": "npm run build && node server/index.js"
   },
   "dependencies": {
     "@11ty/eleventy": "^3.1.2",
