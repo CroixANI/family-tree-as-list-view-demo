@@ -215,22 +215,7 @@ Generate demo photos automatically for the current royal dataset:
 npm run photos:demo
 ```
 
-<<<<<<< HEAD
-Download public photos (Wikipedia/Wikimedia) into sibling files and remove `photo:` URLs from frontmatter:
-
-```bash
-npm run photos:public
-```
-
-## GitHub Pages
-
-A workflow is provided at `.github/workflows/deploy-pages.yml`.
-It builds the site and deploys `SITE_OUTPUT_DIR` to GitHub Pages.
-
-This workflow is for public static hosting. If you need access control with allowlisted emails, deploy secure mode to your own server/VPS instead of GitHub Pages.
-=======
 ## CI/CD
->>>>>>> 0ec5150 (Document auth flow and README cleanup)
 
 Docker image publishing workflow:
 
